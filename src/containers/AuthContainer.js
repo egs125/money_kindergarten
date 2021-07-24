@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import { registerNewAccount, login } from '../modules/userInfo';
 import Auth from '../components/Auth';
 
 const AuthContainer = () => {
 
   const dispatch = useDispatch();
-  
-  const { isLoggedIn, userObj } = useSelector(state => ({
-    isLoggedIn: state.userInfo.isLoggedIn,
-    userObj: state.userInfo.userObj,
-  }));
 
   const [isOnRegister, setIsOnRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   const onRegister = obj => dispatch(registerNewAccount(obj));
   const onLogin = obj => dispatch(login(obj));
 
   const toggleRegisterProcess = () => setIsOnRegister(!isOnRegister);
+  const toggleAlert = () => setOpenAlert(!openAlert);
 
   const onChangeValue = (e) => {
     const {
@@ -48,33 +48,55 @@ const AuthContainer = () => {
     } 
   };
 
-  const handleLogin = () => {
-    if (email === '' || password === '') {
-      return false;
+  const checkValidation = () => {
+    let isValid = true;
+    if (email === '') {
+      setAlertMessage('이메일 주소를 입력해주세요');
+      toggleAlert();
+      isValid = false;
+    } else if (password === '') {
+      setAlertMessage('비밀번호를 입력해주세요');
+      toggleAlert();
+      isValid = false;
     }
 
-    onLogin({ email, password });
+    return isValid;
+  }
+
+  const handleLogin = () => {
+    const isValid = checkValidation();
+
+    if (isValid) {
+      onLogin({ email, password });
+    }
   };
 
   const onClickRegisterBtn = () => {
-    if (email === '' || password === '') {
-      return false;
-    }
+    const isValid = checkValidation();
 
-    onRegister({ email, password });
+    if (isValid) {
+      onRegister({ email, password });
+    }
   };
 
   return (
-    <Auth
-      isOnRegister={isOnRegister}
-      email={email}
-      password={password}
-      toggleRegisterProcess={toggleRegisterProcess}
-      onChangeValue={onChangeValue}
-      onPressKey={onPressKey}
-      handleLogin={handleLogin}
-      onClickRegisterBtn={onClickRegisterBtn}
-    />
+    <>
+      <Auth
+        isOnRegister={isOnRegister}
+        email={email}
+        password={password}
+        toggleRegisterProcess={toggleRegisterProcess}
+        onChangeValue={onChangeValue}
+        onPressKey={onPressKey}
+        handleLogin={handleLogin}
+        onClickRegisterBtn={onClickRegisterBtn}
+      />
+      <Snackbar open={openAlert} autoHideDuration={3000} onClose={toggleAlert}>
+        <MuiAlert severity="error" elevation={6} variant="filled" >
+          {alertMessage}
+        </MuiAlert>
+      </Snackbar>
+    </>
   );
 
 };
