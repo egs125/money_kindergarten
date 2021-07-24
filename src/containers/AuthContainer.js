@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { registerNewAccount, login, logout } from '../modules/userInfo';
+import { registerNewAccount, login } from '../modules/userInfo';
 import Auth from '../components/Auth';
 
 const AuthContainer = () => {
@@ -12,12 +12,14 @@ const AuthContainer = () => {
     userObj: state.userInfo.userObj,
   }));
 
+  const [isOnRegister, setIsOnRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const onRegister = obj => dispatch(registerNewAccount(obj));
   const onLogin = obj => dispatch(login(obj));
-  const onLogout = () => dispatch(logout());
+
+  const toggleRegisterProcess = () => setIsOnRegister(!isOnRegister);
 
   const onChangeValue = (e) => {
     const {
@@ -31,7 +33,22 @@ const AuthContainer = () => {
     }
   };
 
-  const onClickLoginBtn = () => {
+  const onPressKey = e => {
+    const { charCode, target: { name } } = e;
+    
+    if (charCode === 13) { 
+      if (name === 'email') {    
+        const target = document.querySelector('#password');
+        if (target) {
+          target.focus();
+        }
+      } else if (name === 'password') {
+        handleLogin();
+      }
+    } 
+  };
+
+  const handleLogin = () => {
     if (email === '' || password === '') {
       return false;
     }
@@ -49,14 +66,13 @@ const AuthContainer = () => {
 
   return (
     <Auth
-      isLoggedIn={isLoggedIn}
-      userObj={userObj}
+      isOnRegister={isOnRegister}
       email={email}
       password={password}
-      onLogin={onLogin}
-      onLogout={onLogout}
+      toggleRegisterProcess={toggleRegisterProcess}
       onChangeValue={onChangeValue}
-      onClickLoginBtn={onClickLoginBtn}
+      onPressKey={onPressKey}
+      handleLogin={handleLogin}
       onClickRegisterBtn={onClickRegisterBtn}
     />
   );

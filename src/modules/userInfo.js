@@ -45,7 +45,6 @@ function* logoutSaga() {
   }
 }
 
-
 export function* userInfoSaga() {
   yield takeEvery(REGISTER, registerNewAccountSaga);
   yield takeEvery(LOGIN, loginSaga);

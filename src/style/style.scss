@@ -4,22 +4,10 @@ body {
   margin: 0;
 }
 
-.root-container {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-}
-
 .nav-container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 5vh;
-  height: 8vh;
   background-color: #1a90ff;
-
+  height: 50px;
+  
   & button {
     color: #fff;
   }
@@ -28,42 +16,60 @@ body {
     color: #fff;
     font-weight: 900;
   }
+}
 
-  .nav-drawer {
-    // background-color: red;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 8vh;
-    padding: 5px;
-    margin-left: -10px;
-    width: 40%;
-    z-index: 100;
-    color:slategrey;
-    font-weight: 900;
-    background-color: #fff;
+.nav-drawer {
+  position: fixed;
+  z-index: 100;
+  background-color: #fff;
+  border: 1px solid #1a90ff;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  width: 40%;
+  color:slategrey;
+  font-weight: 900;
 
-    & div:nth-child(4) {
-      margin-bottom: 1vh;
-    }
+  & div:nth-child(4) {
+    margin-bottom: 1vh;
+  }
 
-    & div:last-child {
-      margin-top: 1vh;
-    }
+  & div:last-child {
+    margin-top: 1vh;
   }
 }
 
-.auth-area {
-  width: 100%;    
-}
-
-.btn-container {
-  display: flex;
-  justify-content: center;
+.auth-container {
   width: 100%;
-  margin-top: 3vh;
+  height: 100vh;
 
-  .spacing-area {
-    width: 2vw;
+  & .icon-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25vh;
+  }
+
+  & .input-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+  }
+
+  & .btn-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: max-content;
+    margin-top: 10px;
+
+    & button {
+      width: 60vw;
+    }
+
+    & .spacing-area {
+      height: 1vh;
+    }
   }
 }
