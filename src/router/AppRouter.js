@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import NavBar from '../components/NavBar';
 import HomeContainer from '../containers/HomeContainer';
@@ -32,10 +32,13 @@ const AppRouter = (props) => {
               <ExpenseContainer />
             </Route>
           </>
-        ): (
-          <Route exact path="/">
-            <AuthContainer />
-          </Route>
+        ) : (
+            <>
+              <Route exact path="/">
+                <AuthContainer />
+              </Route>
+              <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+            </>
         )}
       </Switch>
     </Router>
