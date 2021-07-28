@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { firebaseInstance, rsf } from "../fBase";
+import { rsf } from "../fBase";
 
 // Action types
 const REGISTER = 'userInfo/REGISTER';
@@ -38,7 +38,7 @@ function* loginSaga(action) {
 
 function* logoutSaga() {
   try {
-    const result = yield call(rsf.auth.signOut);
+    yield call(rsf.auth.signOut);
     yield put({ type: SET_USER_LOGOUT });
   } catch (e) {
     console.log(e);

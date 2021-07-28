@@ -1,23 +1,24 @@
 import React from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import NavBar from '../components/NavBar';
 import HomeContainer from '../containers/HomeContainer';
 import AuthContainer from '../containers/AuthContainer';
 import WishListContainer from "../containers/WishListContainer";
 
-const AppRouter = () => {
-  const { isLoggedIn, userObj } = useSelector(state => ({
+const AppRouter = (props) => {
+  const { isLoggedIn } = useSelector(state => ({
     isLoggedIn: state.userInfo.isLoggedIn,
-    userObj: state.userInfo.userObj,
   }));
 
   return (
     <Router>
+      <NavBar />     
       <Switch>
         {isLoggedIn ? (
           <>
             <Route exact path="/">
-              <HomeContainer />
+              <HomeContainer props={props} />
             </Route>
             <Route exact path="/wishList">
               <WishListContainer />

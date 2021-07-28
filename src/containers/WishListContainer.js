@@ -1,6 +1,6 @@
 import React from 'react';
 
-const WishListContainer = () => {
+const WishListContainer = (props) => {
 
   return (
     <div>

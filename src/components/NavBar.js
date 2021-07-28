@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { IconButton, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core';
-import { Assessment, Menu, Close, ChevronLeft } from '@material-ui/icons';
-import { login, logout } from '../modules/userInfo';
+import { IconButton, List, ListItem, Divider } from '@material-ui/core';
+import { Menu, Close } from '@material-ui/icons';
+import { logout } from '../modules/userInfo';
 
 const NavBar = (props) => {
+
+  const history = useHistory();
 
   const dispatch = useDispatch();
 
   const [openDrawer, setOpenDrawer] = useState(false);
   
-  const { isLoggedIn, userObj } = useSelector(state => ({
+  const { isLoggedIn } = useSelector(state => ({
     isLoggedIn: state.userInfo.isLoggedIn,
-    userObj: state.userInfo.userObj,
   }));
 
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer);
+  };
+
+  const onClickWish = () => {
+    history.push('/wishList');
   };
 
   const onLogout = () => {
@@ -42,9 +48,19 @@ const NavBar = (props) => {
             <ListItem button>
               <span>요약</span>
             </ListItem>
-            <ListItem button><span>장바구니</span></ListItem>
+            <ListItem
+              button
+              onClick={onClickWish}
+            >
+              <span>장바구니</span>
+            </ListItem>
             <ListItem button><span>지출</span></ListItem>
-            <ListItem button className="nav-drawer-last-item"><span>수입</span></ListItem>
+            <ListItem
+              button
+              className="nav-drawer-last-item"
+            >
+              <span>수입</span>
+            </ListItem>
             {isLoggedIn && (
               <>
                 <Divider />
