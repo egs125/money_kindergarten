@@ -5,7 +5,7 @@ import { IconButton, List, ListItem, Divider } from '@material-ui/core';
 import { Menu, Close } from '@material-ui/icons';
 import { logout } from '../modules/userInfo';
 
-const NavBar = (props) => {
+const NavBar = () => {
 
   const history = useHistory();
 
@@ -21,8 +21,9 @@ const NavBar = (props) => {
     setOpenDrawer(!openDrawer);
   };
 
-  const onClickWish = () => {
-    history.push('/wishList');
+  const onMovePage = (page) => {
+    toggleDrawer();
+    history.push(`/${page}`);
   };
 
   const onLogout = () => {
@@ -45,19 +46,28 @@ const NavBar = (props) => {
       {openDrawer && (
         <div className="nav-drawer">
           <List>
-            <ListItem button>
+            <ListItem
+              button
+              onClick={() => onMovePage('')}
+            >
               <span>요약</span>
             </ListItem>
             <ListItem
               button
-              onClick={onClickWish}
+              onClick={() => onMovePage('wishList')}
             >
               <span>장바구니</span>
             </ListItem>
-            <ListItem button><span>지출</span></ListItem>
+            <ListItem
+              button
+              onClick={() => onMovePage('expense')}
+            >
+              <span>지출</span>
+            </ListItem>
             <ListItem
               button
               className="nav-drawer-last-item"
+              onClick={() => onMovePage('income')}
             >
               <span>수입</span>
             </ListItem>

@@ -5,6 +5,8 @@ import NavBar from '../components/NavBar';
 import HomeContainer from '../containers/HomeContainer';
 import AuthContainer from '../containers/AuthContainer';
 import WishListContainer from "../containers/WishListContainer";
+import IncomeContainer from "containers/IncomeContainer";
+import ExpenseContainer from "containers/ExpenseContainer";
 
 const AppRouter = (props) => {
   const { isLoggedIn } = useSelector(state => ({
@@ -22,6 +24,12 @@ const AppRouter = (props) => {
             </Route>
             <Route exact path="/wishList">
               <WishListContainer />
+            </Route>
+            <Route exact path="/income">
+              <IncomeContainer />
+            </Route>
+            <Route exact path="/expense">
+              <ExpenseContainer />
             </Route>
           </>
         ): (
