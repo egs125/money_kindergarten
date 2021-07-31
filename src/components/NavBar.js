@@ -18,7 +18,9 @@ const NavBar = () => {
   }));
 
   const toggleDrawer = () => {
-    setOpenDrawer(!openDrawer);
+    if (isLoggedIn) {
+      setOpenDrawer(!openDrawer);
+    }
   };
 
   const onMovePage = (page) => {

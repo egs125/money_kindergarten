@@ -2,7 +2,7 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { dbService } from "fBase";
 
 // Action types
-const READ = 'moneyInfo/READ';
+const READ = 'income/READ';
 // const REGISTER = 'moneyInfo/REGISTER';
 // const LOGIN = 'userInfo/LOGIN';
 // const LOGOUT = 'userInfo/LOGOUT';
@@ -10,7 +10,7 @@ const READ = 'moneyInfo/READ';
 // const SET_USER_LOGOUT = 'userInfo/SET_USER_LOGOUT';
 
 // Action creators
-export const readMoneyInfo = obj => ({ type: READ, obj });
+export const readIncome = obj => ({ type: READ, obj });
 // export const registerNewAccount = obj => ({ type: REGISTER, obj });
 // export const login = obj => ({ type: LOGIN, obj });
 // export const logout = () => ({ type: LOGOUT });
@@ -18,6 +18,13 @@ export const readMoneyInfo = obj => ({ type: READ, obj });
 // export const setUserLogout = () => ({ type: SET_USER_LOGOUT });
 
 // saga
+function* readIncomeSaga(action) {
+  try {
+    console.log(action);
+  } catch (e) {
+    console.log(e);
+  }
+}
 // function* registerNewAccountSaga(action) {  
 //   try {
 //     const { email, password } = action.obj;
@@ -47,7 +54,8 @@ export const readMoneyInfo = obj => ({ type: READ, obj });
 //   }
 // }
 
-export function* userInfoSaga() {
+export function* incomeInfoSaga() {
+  yield takeEvery(READ, readIncomeSaga);
   // yield takeEvery(REGISTER, registerNewAccountSaga);
   // yield takeEvery(LOGIN, loginSaga);
   // yield takeEvery(LOGOUT, logoutSaga);
@@ -55,13 +63,14 @@ export function* userInfoSaga() {
 
 // initial states
 const initialState = {
-  isLoggedIn: false,
-  userObj: {},
+  incomeObj: {},
 };
 
 // reducers
-export default function UserInfo(state = initialState, action) {
+export default function incomeInfo(state = initialState, action) {
   switch (action.type) {
+    case READ:
+      return state;
     // case REGISTER:
     //   return state;
     // case LOGIN:

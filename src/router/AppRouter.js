@@ -8,19 +8,19 @@ import WishListContainer from "../containers/WishListContainer";
 import IncomeContainer from "containers/IncomeContainer";
 import ExpenseContainer from "containers/ExpenseContainer";
 
-const AppRouter = (props) => {
+const AppRouter = () => {
   const { isLoggedIn } = useSelector(state => ({
     isLoggedIn: state.userInfo.isLoggedIn,
   }));
 
   return (
     <Router>
-      <NavBar />     
+      <NavBar />
       <Switch>
         {isLoggedIn ? (
           <>
             <Route exact path="/">
-              <HomeContainer props={props} />
+              <HomeContainer />
             </Route>
             <Route exact path="/wishList">
               <WishListContainer />
@@ -37,7 +37,7 @@ const AppRouter = (props) => {
               <Route exact path="/">
                 <AuthContainer />
               </Route>
-              <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+              <Redirect to={{ pathname: '/' }} />
             </>
         )}
       </Switch>

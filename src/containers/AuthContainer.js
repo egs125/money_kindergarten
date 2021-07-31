@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { registerNewAccount, login } from '../modules/userInfo';
+import { registerNewAccount, login } from 'modules/userInfo';
 import Auth from '../components/Auth';
 
 const AuthContainer = () => {

@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { dbService } from "../fBase";
+import { dbService } from "fBase";
 
 // Action types
 const REGISTER = 'wishInfo/REGISTER';
@@ -10,7 +10,7 @@ const SET_WISH_LIST = 'wishList/SET_WISH_LIST';
 
 // Action creators
 export const registerNewWish = obj => ({ type: REGISTER, obj });
-export const readWishList = user => ({ type: READ, user });
+export const readWishList = obj=> ({ type: READ, ...obj });
 export const deleteWish = obj => ({ type: DELETE, obj });
 export const updateWish = obj => ({ type: UPDATE, obj });
 
@@ -31,14 +31,24 @@ function* registerNewWishSaga(action) {
 
 function* readWishListSaga(action) {
   try {
-    console.log(action);
-    // const { name, price, date, remark, rank} = action.obj;
-    // const result = yield put();
+    const { userEmail, month } = action;
 
-    // dbService.collection('mukkit').orderBy('sn').onSnapshot(snapShot => {
-    //   const list = snapShot.docs.map(row => ({ id: row.id, onEdit: false, ...row.data() }));
-    //   setMukkitList(list);
-    // });
+    const wishList = yield call(async () => {
+      const wishRefs = await dbService.collection('wishlists')
+        .doc(userEmail).collection(month).get();
+      
+      const { docs } = wishRefs;
+
+      if (docs) {
+        return docs.map(doc => {
+          if (doc.exists) {
+            return { id: doc.id, ...doc.data() };
+          }
+        });
+      }
+    });
+
+    yield put({ type: SET_WISH_LIST, wishList });
   } catch (e) {
     console.log(e);
   }
