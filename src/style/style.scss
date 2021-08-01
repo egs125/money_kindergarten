@@ -73,3 +73,27 @@ body {
     }
   }
 }
+
+.child-container {
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 10px;
+}
+
+.page-title {
+
+}
+
+.total-amount {
+
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 5vh;
+  right: 10vw;
+  cursor: pointer;
+}
