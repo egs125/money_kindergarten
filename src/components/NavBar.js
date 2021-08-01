@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { IconButton, List, ListItem, Divider } from '@material-ui/core';
-import { Menu, Close } from '@material-ui/icons';
+import { Menu, Close, MonetizationOn } from '@material-ui/icons';
 import { logout } from '../modules/userInfo';
 
 const NavBar = () => {
@@ -18,9 +18,7 @@ const NavBar = () => {
   }));
 
   const toggleDrawer = () => {
-    if (isLoggedIn) {
-      setOpenDrawer(!openDrawer);
-    }
+    setOpenDrawer(!openDrawer);
   };
 
   const onMovePage = (page) => {
@@ -36,13 +34,19 @@ const NavBar = () => {
   return (
     <>
       <nav className="nav-container">
-        <IconButton onClick={toggleDrawer}>
+        {isLoggedIn ? (
+          <IconButton onClick={toggleDrawer}>
           {openDrawer ? (
             <Close />
           ) : (
             <Menu />
           )}
         </IconButton>
+        ) : (
+          <IconButton>
+            <MonetizationOn />
+          </IconButton>
+        )}
         <span className="app-title">재린이 유치원</span>
       </nav>
       {openDrawer && (
