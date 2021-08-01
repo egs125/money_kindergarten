@@ -17,13 +17,17 @@ export const updateWish = obj => ({ type: UPDATE, obj });
 // saga
 function* registerNewWishSaga(action) {
   try {
-    console.log(action);
-    // const { name, price, date, remark, rank} = action.obj;
-    // const result = yield put();
-    // await dbService.collection('mukkit').add({
-    //       sn: mukkitList.length + 1,
-    //       ...newMukkit,
-    //   });
+    const { userEmail, item, curYm } = action.obj;
+
+    dbService.collection('wishlists')
+      .doc(userEmail).collection(curYm).add(item)
+      .then(result => {
+        console.log(result);
+      })
+      .catch((error) => {
+          console.error("Error adding document: ", error);
+      });;
+    
   } catch (e) {
     console.log(e);
   }

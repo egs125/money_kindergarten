@@ -1,7 +1,6 @@
 import React from 'react';
 import { TextField, Button } from '@material-ui/core';
-import ChildCareIcon from '@material-ui/icons/ChildCare'; 
-import LocalAtmIcon from '@material-ui/icons/LocalAtm'
+import { ChildCare, LocalAtm } from '@material-ui/icons';
 
 const Auth = ({
   isOnRegister,
@@ -12,9 +11,9 @@ const Auth = ({
   <div className="auth-container">
 
     <div className="icon-area">
-      <ChildCareIcon fontSize="large" />
-      <LocalAtmIcon fontSize="large" />
-      <ChildCareIcon fontSize="large" />
+      <ChildCare fontSize="large" />
+      <LocalAtm fontSize="large" />
+      <ChildCare fontSize="large" />
     </div>
 
     <div className="input-area">

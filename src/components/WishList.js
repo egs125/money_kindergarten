@@ -4,7 +4,7 @@ import * as cm from 'share/common';
 const Wish = ({item}) => {
   return (
     <div>
-      {`${item.name}, ${item.price}원`}
+      {`${item.itemName}, ${item.itemPrice}원`}
     </div>
   );
 };
