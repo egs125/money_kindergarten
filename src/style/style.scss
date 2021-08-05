@@ -4,6 +4,20 @@ body {
   margin: 0;
 }
 
+.flex-box {
+  display: flex;
+
+  &-column {
+    @extend .flex-box;
+    flex-direction: column;
+  }
+
+  &-row {
+    @extend .flex-box;
+    flex-direction: row;
+  }
+}
+
 .nav-container {
   background-color: #1a90ff;
   height: 50px;
@@ -43,22 +57,20 @@ body {
   height: 100vh;
 
   & .icon-area {
-    display: flex;
+    @extend .flex-box;
     justify-content: center;
     align-items: center;
     height: 25vh;
   }
 
   & .input-area {
-    display: flex;
-    flex-direction: column;
+    @extend .flex-box-column;
     align-items: center;
     width: 100vw;
   }
 
   & .btn-area {
-    display: flex;
-    flex-direction: column;
+    @extend .flex-box-column;
     align-items: center;
     width: 100vw;
     height: max-content;
@@ -75,16 +87,19 @@ body {
 }
 
 .child-container {
-  display: flex;
-  flex-direction: column;
-  // justify-content: center;
-  width: 100vw;
+  @extend .flex-box-column;
+  width: 100%;
   height: 100vh;
-  margin: 10px;
+  align-items: center;
 }
 
 .page-title {
-
+  @extend .flex-box;
+  justify-content: flex-start;
+  align-items: center;
+  height: 10vh;
+  font-size: 3vh;
+  width: 85vw;
 }
 
 .total-amount {
@@ -93,7 +108,26 @@ body {
 
 .floating-btn {
   position: fixed;
-  bottom: 5vh;
-  right: 10vw;
+  bottom: 7vh;
+  right: 15vw;
   cursor: pointer;
+}
+
+.item-detail {
+  @extend .flex-box-column;
+
+  & div {
+    width: 85vw;
+  }
+}
+
+.item-btn-area {
+  @extend .flex-box-row;
+  margin-top: 2vh;
+  width: 85vw;
+  justify-content: space-evenly;
+
+  & button {
+    width: 40vw;
+  }
 }

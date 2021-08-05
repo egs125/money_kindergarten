@@ -7,6 +7,8 @@ const READ = 'wishInfo/READ';
 const DELETE = 'wishInfo/DELETE';
 const UPDATE = 'wishInfo/UPDATE';
 const SET_WISH_LIST = 'wishList/SET_WISH_LIST';
+const SUCCESS = 'wishList/SUCCESS';
+const FAIL = 'wishList/FAIL';
 
 // Action creators
 export const registerNewWish = obj => ({ type: REGISTER, obj });
@@ -19,15 +21,24 @@ function* registerNewWishSaga(action) {
   try {
     const { userEmail, item, curYm } = action.obj;
 
-    dbService.collection('wishlists')
-      .doc(userEmail).collection(curYm).add(item)
-      .then(result => {
-        console.log(result);
-      })
-      .catch((error) => {
-          console.error("Error adding document: ", error);
-      });;
-    
+    const result = yield call(async () => {
+      return dbService.collection('wishlists')
+        .doc(userEmail).collection(curYm).add(item)
+        .then(result => {
+          return result;
+        })
+        .catch(error => {
+          console.log(error);
+          return null;
+        });
+    });
+
+    if (result) {
+      yield put({ type: SUCCESS, msg: '등록했습니다!' })
+    } else {
+
+    }
+
   } catch (e) {
     console.log(e);
   }
@@ -90,7 +101,9 @@ export function* wishInfoSaga() {
 
 // initial states
 const initialState = {
-  wishList: []
+  wishList: [],
+  isSucceeded: false,
+  msg: '',
 };
 
 // reducers
@@ -108,6 +121,13 @@ export default function wishInfo(state = initialState, action) {
       return {
         wishList: action.wishList,
       };
+    case SUCCESS:
+      return {
+        isSucceeded: true,
+        msg: action.msg,
+      };
+    case FAIL:
+      return state;
     default:
       return state;
   }
