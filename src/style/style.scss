@@ -103,7 +103,12 @@ body {
 }
 
 .total-amount {
-
+  font-size: 2em;
+  width: 85vw;
+  height: 6vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .floating-btn {
@@ -130,4 +135,11 @@ body {
   & button {
     width: 40vw;
   }
+}
+
+.wish-item {
+  width: 85vw;
+  height: 4vh;
+  justify-content: flex-start;
+  align-items: center;
 }
