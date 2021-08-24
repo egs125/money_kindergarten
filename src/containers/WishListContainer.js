@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import { useSwipeable } from 'react-swipeable';
+// import Snackbar from '@material-ui/core/Snackbar';
+// import MuiAlert from '@material-ui/lab/Alert';
 import { readWishList } from 'modules/wishInfo';
 // import * as cm from 'share/common';
 import FloatingAddBtn from 'share/FloatingAddBtn';
@@ -33,12 +34,17 @@ const WishListContainer = () => {
     });
   };
   
+  const actionHandler = useSwipeable({
+    onTap: e => console.log(e),
+    onSwipedLeft: e => console.log(e),
+  })
+  
   useEffect(() => {
     dispatch(readWishList({ userEmail: userObj.user.email, month: moment().format(`${curYear}-${curMonth}`) }));
   }, [userObj]);
 
   useEffect(() => {
-    const totalAmount = wishList.reduce((sum, item) => sum += item.itemPrice, 0);
+    const totalAmount = Array.isArray(wishList) ? wishList.reduce((sum, item) => sum += item.itemPrice, 0) : 0;
 
     setCurWishList(wishList);
     setTotalWishAmount(totalAmount);
@@ -50,6 +56,7 @@ const WishListContainer = () => {
         curMonth={curMonth}
         totalWishAmount={totalWishAmount}
         curWishList={curWishList}
+        actionHandler={actionHandler}
       />
       <FloatingAddBtn movePage={moveToAddWishList} />
     </div>
