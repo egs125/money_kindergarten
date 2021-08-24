@@ -34,9 +34,9 @@ function* registerNewWishSaga(action) {
     });
 
     if (result) {
-      yield put({ type: SUCCESS, msg: '등록했습니다!' })
+      yield put({ type: SUCCESS, msg: '등록했습니다!', actionType: 'add' });
     } else {
-
+      yield put({ type: FAIL, msg: '처리하지 못했습니다.', actionType: 'add' });
     }
 
   } catch (e) {
@@ -71,10 +71,27 @@ function* readWishListSaga(action) {
 
 function* deleteWishSaga(action) {
   try {
-    console.log(action);
-    // const { name, price, date, remark, rank} = action.obj;
-    // const result = yield put();
-    //dbService.doc(`mukkit/${id}`).delete();
+    const { obj: { userEmail, month, id } } = action;
+
+    const result = yield call(async () => {
+      return dbService.collection('wishlists')
+        .doc(userEmail).collection(month).doc(id).delete()
+        .then(() => {
+          return true;
+        })
+        .catch(error => {
+          console.log(error);
+          return false;
+        });
+    });
+
+    if (result) {
+      yield put({ type: SUCCESS, msg: '삭제했습니다!', actionType: 'delete', id: id });
+      yield put({ type: READ, userEmail: userEmail, month: month });
+    } else {
+      yield put({ type: FAIL, msg: '처리하지 못했습니다.', actionType: 'delete', id: id });
+    }
+    
   } catch (e) {
     console.log(e);
   }
@@ -83,7 +100,6 @@ function* deleteWishSaga(action) {
 function* updateWishSaga(action) {
   try {
     console.log(action);
-
     // dbService.doc(`mukkit/${mukkit.id}`).update({
     //     isVisited: true,
     //   }); 
@@ -102,8 +118,12 @@ export function* wishInfoSaga() {
 // initial states
 const initialState = {
   wishList: [],
-  isSucceeded: false,
-  msg: '',
+  actionObj: {
+    isSucceeded: false,
+    msg: '',
+    id: '',
+    type: '',
+  },
 };
 
 // reducers
@@ -123,11 +143,22 @@ export default function wishInfo(state = initialState, action) {
       };
     case SUCCESS:
       return {
-        isSucceeded: true,
-        msg: action.msg,
+        actionObj: {
+          isSucceeded: true,
+          msg: action.msg,
+          id: '',
+          type: action.actionType,
+        }        
       };
     case FAIL:
-      return state;
+      return {
+        actionObj: {
+          isSucceeded: false,
+          msg: action.msg,
+          id: '',
+          type: action.actionType,
+        }        
+      };
     default:
       return state;
   }

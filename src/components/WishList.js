@@ -1,15 +1,32 @@
 import React from 'react';
+import { IconButton } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import * as cm from 'share/common';
 
-const Wish = ({ item, actionHandler }) => {
+const Wish = ({ item, actionHandler, showDelBtn, deleteWishList }) => {
   return (
-    <div className="wish-item" {...actionHandler}>
-      {`${item.itemName}, ${cm.addComma(item.itemPrice)}원`}
+    <div id={item.id} className="wish-item" {...actionHandler}>
+      <div className={`wish-info${showDelBtn === item.id ? '-deletable' : ''}`}>
+        <div className="name">
+          {item.itemName}
+        </div>
+        <div className="price">
+          {`${cm.addComma(item.itemPrice)}원`}
+        </div>
+      </div>
+      
+      {showDelBtn && showDelBtn === item.id && (
+        <div className="icon">
+          <IconButton onClick={() => deleteWishList(item.id)}>
+            <DeleteIcon />
+          </IconButton>
+        </div>
+      )}
     </div>
   );
 };
 
-const WishList = ({ curMonth, totalWishAmount, curWishList, actionHandler }) => {
+const WishList = ({ curMonth, totalWishAmount, curWishList, actionHandler, showDelBtn, deleteWishList }) => {
   
   return (
     <>
@@ -20,7 +37,7 @@ const WishList = ({ curMonth, totalWishAmount, curWishList, actionHandler }) => 
         {cm.addComma(totalWishAmount)}원
       </div>
       {Array.isArray(curWishList) &&
-        curWishList.map((item, index) => <Wish key={index} item={item} actionHandler={actionHandler} />)
+        curWishList.map((item, index) => <Wish key={index} item={item} actionHandler={actionHandler} showDelBtn={showDelBtn} deleteWishList={deleteWishList} />)
       }
     </>
   );

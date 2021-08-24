@@ -139,8 +139,31 @@ body {
 }
 
 .wish-item {
-  width: 85vw;
-  height: 4vh;
+  display: flex;
   justify-content: flex-start;
   align-items: center;
+  width: 85vw;
+  height: 6vh;
+
+  & .wish-info-deletable {
+    width: 72vw;
+    
+  }
+
+  & .wish-info {
+    width: 100vw;
+  }
+
+  & .name {
+    //
+  }
+
+  & .price {
+    //
+  }
+
+  & .icon {
+    //
+  }
+  
 }

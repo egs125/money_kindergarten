@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { registerNewWish } from 'modules/wishInfo';
 import ItemDetail from 'components/ItemDetail';
-import { SwitchVideo } from '@material-ui/icons';
 
 const ItemDetailContainer = () => {
 
@@ -14,8 +13,9 @@ const ItemDetailContainer = () => {
 
   const { state: { type, actionType } } = location;
 
-  const { userObj } = useSelector(state => ({
+  const { userObj, actionObj } = useSelector(state => ({
     userObj: state.userInfo.userObj,
+    actionObj: state.wishInfo.actionObj,
   }));
 
   const [item, setItem] = useState({
@@ -60,6 +60,7 @@ const ItemDetailContainer = () => {
     const action = mapActions();
     const param = mapParamObj();
     dispatch(action(param));
+    // onClickPrevBtn();
   };
 
   // action 유형에 따라 module action mapping
@@ -125,6 +126,16 @@ const ItemDetailContainer = () => {
 
     return `${typeText} ${actionText}`;
   };
+
+  useEffect(() => {
+    if (actionObj) {
+      const { type = '', isSucceeded = false, msg = '' } = actionObj;
+
+      if (isSucceeded && actionType === type) {
+        console.log(msg);
+      }
+    }
+  }, [actionObj]);
 
   return (
     <div className="child-container">

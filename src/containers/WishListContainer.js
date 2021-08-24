@@ -5,7 +5,7 @@ import moment from 'moment';
 import { useSwipeable } from 'react-swipeable';
 // import Snackbar from '@material-ui/core/Snackbar';
 // import MuiAlert from '@material-ui/lab/Alert';
-import { readWishList } from 'modules/wishInfo';
+import { readWishList, deleteWish } from 'modules/wishInfo';
 // import * as cm from 'share/common';
 import FloatingAddBtn from 'share/FloatingAddBtn';
 import WishList from 'components/WishList';
@@ -26,6 +26,7 @@ const WishListContainer = () => {
 
   const [curWishList, setCurWishList] = useState([]);
   const [totalWishAmount, setTotalWishAmount] = useState(0);
+  const [showDelBtn, setShowDelBtn] = useState(false);
 
   const moveToAddWishList = () => {
     history.push({
@@ -34,9 +35,17 @@ const WishListContainer = () => {
     });
   };
   
+  const deleteWishList = id => {
+    dispatch(deleteWish({
+      userEmail: userObj.user.email,
+      month: moment().format(`${curYear}-${curMonth}`),
+      id,
+    }));
+  };
+
   const actionHandler = useSwipeable({
     onTap: e => console.log(e),
-    onSwipedLeft: e => console.log(e),
+    onSwipedLeft: e => setShowDelBtn(e.target.id),
   })
   
   useEffect(() => {
@@ -57,6 +66,8 @@ const WishListContainer = () => {
         totalWishAmount={totalWishAmount}
         curWishList={curWishList}
         actionHandler={actionHandler}
+        showDelBtn={showDelBtn}
+        deleteWishList={deleteWishList}
       />
       <FloatingAddBtn movePage={moveToAddWishList} />
     </div>
