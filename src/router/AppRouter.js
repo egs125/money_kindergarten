@@ -15,7 +15,7 @@ const AppRouter = () => {
   }));
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <NavBar />
       <Switch>
         {isLoggedIn ? (
