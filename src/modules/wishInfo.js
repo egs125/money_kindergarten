@@ -63,7 +63,7 @@ function* readWishListSaga(action) {
       }
     });
 
-    yield put({ type: SET_WISH_LIST, wishList });
+    yield put({ type: SET_WISH_LIST, wishList, month });
   } catch (e) {
     console.log(e);
   }
@@ -124,6 +124,7 @@ const initialState = {
     id: '',
     type: '',
   },
+  called: '',
 };
 
 // reducers
@@ -140,6 +141,7 @@ export default function wishInfo(state = initialState, action) {
     case SET_WISH_LIST:
       return {
         wishList: action.wishList,
+        called: action.month,
       };
     case SUCCESS:
       return {

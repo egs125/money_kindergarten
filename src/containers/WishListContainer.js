@@ -3,8 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { useSwipeable } from 'react-swipeable';
-// import Snackbar from '@material-ui/core/Snackbar';
-// import MuiAlert from '@material-ui/lab/Alert';
 import { readWishList, deleteWish } from 'modules/wishInfo';
 // import * as cm from 'share/common';
 import FloatingAddBtn from 'share/FloatingAddBtn';
@@ -16,9 +14,10 @@ const WishListContainer = () => {
 
   const dispatch = useDispatch();
 
-  const { userObj, wishList } = useSelector(state => ({
+  const { userObj, wishList, called } = useSelector(state => ({
     userObj: state.userInfo.userObj,
     wishList: state.wishInfo.wishList,
+    called: state.wishInfo.called,
   }));
 
   const curYear = moment().format('YYYY');
@@ -45,11 +44,10 @@ const WishListContainer = () => {
   };
 
   const onEventHandler = (e, id) => {
-    console.log(e.type);
+    // console.log(e.type);
 
     switch (e.type) {
       case 'touchstart':
-        console.log(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
         setTouchPosition({
           x: e.changedTouches[0].pageX,
           y: e.changedTouches[0].pageY
@@ -93,11 +91,13 @@ const WishListContainer = () => {
   const actionHandler = useSwipeable({
     onTap: e => console.log(e),
     onSwipedLeft: e => console.log(e),
-    // onSwipedLeft: e => setShowDelBtn(e.target.id),
   })
   
   useEffect(() => {
-    dispatch(readWishList({ userEmail: userObj.user.email, month: moment().format(`${curYear}-${curMonth}`) }));
+    // 선택한 연월 정보를 조회한 적이 없을 시 
+    if ( called === '' || called !== `${curYear}-${curMonth}` ) {
+      dispatch(readWishList({ userEmail: userObj.user.email, month: moment().format(`${curYear}-${curMonth}`) }));
+    }
   }, [userObj]);
 
   useEffect(() => {

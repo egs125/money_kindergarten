@@ -8,6 +8,8 @@ const LOGOUT = 'userInfo/LOGOUT';
 const SET_USER_LOGIN = 'userInfo/SET_USER_LOGIN';
 const SET_USER_LOGOUT = 'userInfo/SET_USER_LOGOUT';
 const FAIL = 'userInfo/FAIL';
+const FAIL_ON_VALIDATION = 'userInfo/FAIL_ON_VALIDATION';
+const SET_ERROR_MSG = 'userInfo/SET_ERROR_MSG';
 
 // Action creators
 export const registerNewAccount = obj => ({ type: REGISTER, obj });
@@ -15,6 +17,7 @@ export const login = obj => ({ type: LOGIN, obj });
 export const logout = () => ({ type: LOGOUT });
 export const setUserLogin = user => ({ type: SET_USER_LOGIN, user });
 export const setUserLogout = () => ({ type: SET_USER_LOGOUT });
+export const setErrorMsg = msg => ({ type: SET_ERROR_MSG, msg });
 
 // saga
 function* registerNewAccountSaga(action) {  
@@ -46,17 +49,22 @@ function* logoutSaga() {
   }
 }
 
+function* setErrorMsgSaga(action) {
+  yield put({ type: FAIL_ON_VALIDATION, msg: action.msg });
+}
+
 export function* userInfoSaga() {
   yield takeEvery(REGISTER, registerNewAccountSaga);
   yield takeEvery(LOGIN, loginSaga);
   yield takeEvery(LOGOUT, logoutSaga);
+  yield takeEvery(SET_ERROR_MSG, setErrorMsgSaga);
 }
 
 // initial states
 const initialState = {
   isLoggedIn: false,
   userObj: {},
-  authMsg: '',
+  authMsg: { msg: '', isError: false },
 };
 
 // reducers
@@ -72,17 +80,23 @@ export default function UserInfo(state = initialState, action) {
       return {
         isLoggedIn: true,
         userObj: action.user,
-        authMsg: '',
+        authMsg: { msg: '', isError: false },
       };
     case SET_USER_LOGOUT:
       return {
         isLoggedIn: false,
         userObj: {},
-        authMsg: '',
+        authMsg: { msg: '', isError: false },
       };
     case FAIL:
       return {
-        authMsg: action.msg,
+        authMsg: { msg: action.msg, isError: true },
+      };
+    case SET_ERROR_MSG:
+      return state;
+    case FAIL_ON_VALIDATION:
+      return {
+        authMsg: { msg: action.msg, isError: true },
       };
     default:
       return state;

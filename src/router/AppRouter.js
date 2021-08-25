@@ -1,13 +1,14 @@
 import React from "react";
 import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import NavBar from '../components/NavBar';
-import HomeContainer from '../containers/HomeContainer';
-import AuthContainer from '../containers/AuthContainer';
-import WishListContainer from "../containers/WishListContainer";
+import NavBar from 'components/NavBar';
+import HomeContainer from 'containers/HomeContainer';
+import AuthContainer from 'containers/AuthContainer';
+import WishListContainer from "containers/WishListContainer";
 import IncomeContainer from "containers/IncomeContainer";
 import ExpenseContainer from "containers/ExpenseContainer";
 import ItemDetailContainer from "containers/ItemDetailContainer";
+import ToastMessage from "share/ToastMessage";
 
 const AppRouter = () => {
   const { isLoggedIn } = useSelector(state => ({
@@ -40,6 +41,7 @@ const AppRouter = () => {
             <>
               <Route exact path="/">
                 <AuthContainer />
+                <ToastMessage />
               </Route>
               <Redirect to={{ pathname: '/' }} />
             </>
