@@ -48,18 +48,19 @@ const WishList = ({
       <div className="total-amount">
         {cm.addComma(totalWishAmount)}원
       </div>
-      {Array.isArray(curWishList) &&
-        curWishList.map((item, index) =>
-          <Wish
-            key={index}
-            item={item}
-            actionHandler={actionHandler}
-            showDelBtn={showDelBtn}
-            deleteWishList={deleteWishList}
-            onEventHandler={onEventHandler}
-          />
-        )
-      }
+      <div className="wish-item-list">
+        { Array.isArray(curWishList) &&
+          curWishList.map((item, index) =>
+            <Wish
+              key={index}
+              item={item}
+              actionHandler={actionHandler}
+              showDelBtn={showDelBtn}
+              deleteWishList={deleteWishList}
+              onEventHandler={onEventHandler}
+            />
+          )}
+      </div>
     </>
   );
 };

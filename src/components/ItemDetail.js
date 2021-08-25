@@ -3,7 +3,7 @@ import { TextField, Button } from '@material-ui/core';
 
 const ItemDetail = ({ item, onChangeItem, onClickPrevBtn, onClickSubmitBtn }) => {
   return (
-    <div>
+    <div className="item-container">
       <div className="item-detail">
         <TextField
           required

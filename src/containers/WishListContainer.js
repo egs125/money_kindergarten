@@ -46,26 +46,28 @@ const WishListContainer = () => {
 
   const onEventHandler = (e, id) => {
     console.log(e.type);
-    console.log(id);
-    // alert(e.type);
 
     switch (e.type) {
       case 'touchstart':
+        console.log(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
         setTouchPosition({
           x: e.changedTouches[0].pageX,
           y: e.changedTouches[0].pageY
         });
         break;
       case 'touchend':
+        let targetId;
+        
         const distanceX = Math.abs(touchPosition.x - e.changedTouches[0].pageX);
         const distanceY = Math.abs(touchPosition.y - e.changedTouches[0].pageY);
 
-        if ( distanceY >= distanceX && showDelBtn !== id ) {
-          setShowDelBtn(id);
+        if ( distanceX > distanceY && showDelBtn !== id ) {
+          targetId = id;
         } else {
-          // alert('tap???');
+          targetId = '';
         }
-        
+
+        setShowDelBtn(targetId);
         setTouchPosition({ x: '', y: '' });
         break;
       case 'click':
