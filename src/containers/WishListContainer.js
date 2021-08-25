@@ -60,10 +60,10 @@ const WishListContainer = () => {
         const distanceX = Math.abs(touchPosition.x - e.changedTouches[0].pageX);
         const distanceY = Math.abs(touchPosition.y - e.changedTouches[0].pageY);
 
-        if ( distanceY > distanceX && showDelBtn !== id ) {
+        if ( distanceY >= distanceX && showDelBtn !== id ) {
           setShowDelBtn(id);
         } else {
-          alert('tap???');
+          // alert('tap???');
         }
         
         setTouchPosition({ x: '', y: '' });
