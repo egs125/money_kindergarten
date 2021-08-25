@@ -46,22 +46,23 @@ const WishListContainer = () => {
   const onEventHandler = (e, id) => {
     console.log(e.type);
     console.log(id);
+    alert(e.type);
 
     switch (e.type) {
       case 'click':
         // 삭제 아이콘 활성화 상태일 경우에만 삭제 아이콘 비활성화 상태로 변경 처리
-        if (showDelBtn === id) {
-          setShowDelBtn(false);
-        }
+        // if (showDelBtn === id) {
+        //   setShowDelBtn(false);
+        // }
         break;
       case 'dblclick':
         // 상세 페이지로 이동
         break;
       case 'dragend':
         // swipe 효과 위해 drag 종료 시 삭제 아이콘 활성화
-        if (showDelBtn !== id) {
-          setShowDelBtn(id);
-        }
+        // if (showDelBtn !== id) {
+        //   setShowDelBtn(id);
+        // }
         break;
       default:
         break;

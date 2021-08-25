@@ -11,7 +11,8 @@ const Wish = ({ item, actionHandler, showDelBtn, deleteWishList, onEventHandler 
         draggable
         onClick={e => onEventHandler(e, item.id)}
         onDoubleClick={e => onEventHandler(e, item.id)}
-        onDragEnd={e =>  onEventHandler(e, item.id)}
+        onDragEnd={e => onEventHandler(e, item.id)}
+        onTouchStart={e => onEventHandler(e, item.id)}
         {...actionHandler}
       >
         <div className="name">
