@@ -13,6 +13,7 @@ const Wish = ({ item, actionHandler, showDelBtn, deleteWishList, onEventHandler 
         onDoubleClick={e => onEventHandler(e, item.id)}
         onDragEnd={e => onEventHandler(e, item.id)}
         onTouchStart={e => onEventHandler(e, item.id)}
+        onTouchEnd={e => onEventHandler(e, item.id)}
         {...actionHandler}
       >
         <div className="name">

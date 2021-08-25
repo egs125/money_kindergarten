@@ -27,6 +27,7 @@ const WishListContainer = () => {
   const [curWishList, setCurWishList] = useState([]);
   const [totalWishAmount, setTotalWishAmount] = useState(0);
   const [showDelBtn, setShowDelBtn] = useState(false);
+  const [touchPosition, setTouchPosition] = useState({ x: '', y: '' });
 
   const moveToAddWishList = () => {
     history.push({
@@ -46,9 +47,27 @@ const WishListContainer = () => {
   const onEventHandler = (e, id) => {
     console.log(e.type);
     console.log(id);
-    alert(e.type);
+    // alert(e.type);
 
     switch (e.type) {
+      case 'touchstart':
+        setTouchPosition({
+          x: e.changedTouches[0].pageX,
+          y: e.changedTouches[0].pageY
+        });
+        break;
+      case 'touchend':
+        const distanceX = Math.abs(touchPosition.x - e.changedTouches[0].pageX);
+        const distanceY = Math.abs(touchPosition.y - e.changedTouches[0].pageY);
+
+        if ( distanceY > distanceX && showDelBtn !== id ) {
+          setShowDelBtn(id);
+        } else {
+          alert('tap???');
+        }
+        
+        setTouchPosition({ x: '', y: '' });
+        break;
       case 'click':
         // 삭제 아이콘 활성화 상태일 경우에만 삭제 아이콘 비활성화 상태로 변경 처리
         // if (showDelBtn === id) {
