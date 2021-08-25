@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/money_kindergarten/static/css/main.3e548673.chunk.css",
-    "main.js": "/money_kindergarten/static/js/main.86ab6074.chunk.js",
-    "main.js.map": "/money_kindergarten/static/js/main.86ab6074.chunk.js.map",
+    "main.js": "/money_kindergarten/static/js/main.941d9fda.chunk.js",
+    "main.js.map": "/money_kindergarten/static/js/main.941d9fda.chunk.js.map",
     "runtime-main.js": "/money_kindergarten/static/js/runtime-main.f3c129bd.js",
     "runtime-main.js.map": "/money_kindergarten/static/js/runtime-main.f3c129bd.js.map",
     "static/js/2.36a709ca.chunk.js": "/money_kindergarten/static/js/2.36a709ca.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.f3c129bd.js",
     "static/js/2.36a709ca.chunk.js",
     "static/css/main.3e548673.chunk.css",
-    "static/js/main.86ab6074.chunk.js"
+    "static/js/main.941d9fda.chunk.js"
   ]
 }
