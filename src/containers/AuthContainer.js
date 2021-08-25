@@ -52,7 +52,7 @@ const AuthContainer = () => {
       dispatch(setErrorMsg('이메일 주소를 입력해주세요'));
       isValid = false;
     } else if (password === '') {
-      setErrorMsg('비밀번호를 입력해주세요');
+      dispatch(setErrorMsg('비밀번호를 입력해주세요'));
       isValid = false;
     }
 

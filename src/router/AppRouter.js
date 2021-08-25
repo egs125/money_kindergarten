@@ -36,6 +36,7 @@ const AppRouter = () => {
             <Route exact path="/add">
               <ItemDetailContainer />
             </Route>
+            <ToastMessage />
           </>
         ) : (
             <>

@@ -157,10 +157,11 @@ body {
 }
 
 .wish-item-list {
-  position: fixed;
-  top: 25vh;
   @extend .flex-box-column;
   justify-content: flex-start;
+  position: relative;
+  top: 20vh;
+  overflow-y: auto;
 }
 
 .wish-item {

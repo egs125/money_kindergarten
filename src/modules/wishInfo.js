@@ -34,9 +34,9 @@ function* registerNewWishSaga(action) {
     });
 
     if (result) {
-      yield put({ type: SUCCESS, msg: '등록했습니다!', actionType: 'add' });
+      yield put({ type: SUCCESS, msg: '등록했습니다!' });
     } else {
-      yield put({ type: FAIL, msg: '처리하지 못했습니다.', actionType: 'add' });
+      yield put({ type: FAIL, msg: '처리하지 못했습니다.' });
     }
 
   } catch (e) {
@@ -86,10 +86,10 @@ function* deleteWishSaga(action) {
     });
 
     if (result) {
-      yield put({ type: SUCCESS, msg: '삭제했습니다!', actionType: 'delete', id: id });
+      yield put({ type: SUCCESS, msg: '삭제했습니다!' });
       yield put({ type: READ, userEmail: userEmail, month: month });
     } else {
-      yield put({ type: FAIL, msg: '처리하지 못했습니다.', actionType: 'delete', id: id });
+      yield put({ type: FAIL, msg: '처리하지 못했습니다.' });
     }
     
   } catch (e) {
@@ -118,12 +118,7 @@ export function* wishInfoSaga() {
 // initial states
 const initialState = {
   wishList: [],
-  actionObj: {
-    isSucceeded: false,
-    msg: '',
-    id: '',
-    type: '',
-  },
+  wishMsg: { msg: '', isError: false },
   called: '',
 };
 
@@ -145,21 +140,11 @@ export default function wishInfo(state = initialState, action) {
       };
     case SUCCESS:
       return {
-        actionObj: {
-          isSucceeded: true,
-          msg: action.msg,
-          id: '',
-          type: action.actionType,
-        }        
+        wishMsg: { msg: action.msg, isError: false },       
       };
     case FAIL:
       return {
-        actionObj: {
-          isSucceeded: false,
-          msg: action.msg,
-          id: '',
-          type: action.actionType,
-        }        
+        wishMsg: { msg: action.msg, isError: true },       
       };
     default:
       return state;
