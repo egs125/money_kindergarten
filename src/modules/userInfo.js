@@ -7,6 +7,7 @@ const LOGIN = 'userInfo/LOGIN';
 const LOGOUT = 'userInfo/LOGOUT';
 const SET_USER_LOGIN = 'userInfo/SET_USER_LOGIN';
 const SET_USER_LOGOUT = 'userInfo/SET_USER_LOGOUT';
+const FAIL = 'userInfo/FAIL';
 
 // Action creators
 export const registerNewAccount = obj => ({ type: REGISTER, obj });
@@ -22,7 +23,7 @@ function* registerNewAccountSaga(action) {
     const user = yield call(rsf.auth.createUserWithEmailAndPassword, email, password);
     yield put({ type: SET_USER_LOGIN, user });
   } catch (e) {
-    console.log(e);
+    yield put({ type: FAIL, msg: e.message });
   }
 }
 
@@ -32,7 +33,7 @@ function* loginSaga(action) {
     const user = yield call(rsf.auth.signInWithEmailAndPassword, email, password);
     yield put({ type: SET_USER_LOGIN, user });
   } catch (e) {
-    console.log(e);
+    yield put({ type: FAIL, msg: e.message });
   }
 }
 
@@ -41,7 +42,7 @@ function* logoutSaga() {
     yield call(rsf.auth.signOut);
     yield put({ type: SET_USER_LOGOUT });
   } catch (e) {
-    console.log(e);
+    yield put({ type: FAIL, msg: e.message });
   }
 }
 
@@ -55,6 +56,7 @@ export function* userInfoSaga() {
 const initialState = {
   isLoggedIn: false,
   userObj: {},
+  authMsg: '',
 };
 
 // reducers
@@ -70,11 +72,17 @@ export default function UserInfo(state = initialState, action) {
       return {
         isLoggedIn: true,
         userObj: action.user,
+        authMsg: '',
       };
     case SET_USER_LOGOUT:
       return {
         isLoggedIn: false,
-        useObj: {},
+        userObj: {},
+        authMsg: '',
+      };
+    case FAIL:
+      return {
+        authMsg: action.msg,
       };
     default:
       return state;

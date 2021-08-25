@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { registerNewAccount, login } from 'modules/userInfo';
@@ -9,9 +9,16 @@ const AuthContainer = () => {
 
   const dispatch = useDispatch();
 
-  const [isOnRegister, setIsOnRegister] = useState(false);
+  // 신규등록 or 로그인 시 에러 메시지
+  const { authMsg } = useSelector(state => ({
+    authMsg: state.userInfo.authMsg,
+  }));
+
+  const [isOnRegister, setIsOnRegister] = useState(false);  // 신규등록/로그인 전환
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // 에러 처리 메시지 토스트 제어
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
@@ -21,6 +28,7 @@ const AuthContainer = () => {
   const toggleRegisterProcess = () => setIsOnRegister(!isOnRegister);
   const toggleAlert = () => setOpenAlert(!openAlert);
 
+  // 이메일/비밀번호 입력창 변경 이벤트 핸들러
   const onChangeValue = (e) => {
     const {
       target: { name, value },
@@ -33,6 +41,7 @@ const AuthContainer = () => {
     }
   };
 
+  // 엔터키 입력 이벤트 핸들러
   const onPressKey = e => {
     const { charCode, target: { name } } = e;
     
@@ -48,6 +57,7 @@ const AuthContainer = () => {
     } 
   };
 
+  // 정합성 체크
   const checkValidation = () => {
     let isValid = true;
     if (email === '') {
@@ -63,6 +73,7 @@ const AuthContainer = () => {
     return isValid;
   }
 
+  // 로그인 이벤트 핸들러
   const handleLogin = () => {
     const isValid = checkValidation();
 
@@ -71,6 +82,7 @@ const AuthContainer = () => {
     }
   };
 
+  // 신규 등록 버튼 클릭 이벤트 핸들러
   const onClickRegisterBtn = () => {
     const isValid = checkValidation();
 
@@ -78,6 +90,14 @@ const AuthContainer = () => {
       onRegister({ email, password });
     }
   };
+
+  useEffect(() => {
+    // 로그인 or 신규가입 과정에서 에러 발생 시 서버 에러 메시지 출력
+    if (authMsg !== '') {
+      setAlertMessage(authMsg);
+      setOpenAlert(true);
+    }
+  }, [authMsg]);
 
   return (
     <>

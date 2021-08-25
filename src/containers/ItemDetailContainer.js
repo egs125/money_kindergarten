@@ -60,7 +60,6 @@ const ItemDetailContainer = () => {
     const action = mapActions();
     const param = mapParamObj();
     dispatch(action(param));
-    // onClickPrevBtn();
   };
 
   // action 유형에 따라 module action mapping
