@@ -44,7 +44,7 @@ const WishListContainer = () => {
   };
 
   const actionHandler = useSwipeable({
-    onTap: e => alert(e.target.id),
+    onTap: e => console.log(e),
     onSwipedLeft: e => alert(e.target.id),
     // onSwipedLeft: e => setShowDelBtn(e.target.id),
   })

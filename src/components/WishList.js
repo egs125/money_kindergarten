@@ -5,8 +5,8 @@ import * as cm from 'share/common';
 
 const Wish = ({ item, actionHandler, showDelBtn, deleteWishList }) => {
   return (
-    <div id={item.id} className="wish-item" {...actionHandler}>
-      <div className={`wish-info${showDelBtn === item.id ? '-deletable' : ''}`}>
+    <div id={item.id} className="wish-item" >
+      <div className={`wish-info${showDelBtn === item.id ? '-deletable' : ''}`} {...actionHandler}>
         <div className="name">
           {item.itemName}
         </div>

@@ -19,8 +19,11 @@ body {
 }
 
 .nav-container {
+  position: fixed;
   background-color: #1a90ff;
   height: 50px;
+  width: 100vw;
+  z-index: 50;
   
   & button {
     color: #fff;
@@ -33,13 +36,14 @@ body {
 }
 
 .nav-drawer {
-  position: fixed;
+  position: absolute;
   z-index: 100;
   background-color: #fff;
   border: 1px solid #1a90ff;
   border-top: none;
   border-radius: 0 0 10px 10px;
   width: 40%;
+  top: 50px;
   color:slategrey;
   font-weight: 900;
 
@@ -88,16 +92,19 @@ body {
 
 .child-container {
   @extend .flex-box-column;
+  position: absolute;
+  top: 50px;
   width: 100%;
   height: 100vh;
   align-items: center;
+  justify-content: space-evenly;
 }
 
 .page-title {
   @extend .flex-box;
   justify-content: flex-start;
   align-items: center;
-  height: 10vh;
+  height: 3vh;
   font-size: 3vh;
   width: 85vw;
 }
@@ -106,7 +113,7 @@ body {
   font-size: 2em;
   width: 85vw;
   height: 6vh;
-  margin-bottom: 2vh;
+  // margin-bottom: 2vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,15 +150,16 @@ body {
   justify-content: flex-start;
   align-items: center;
   width: 85vw;
-  height: 8vh;
+  height: 6vh;
 
   & .wish-info-deletable {
     width: 72vw;
-    
+    background-color: aquamarine;
   }
 
   & .wish-info {
     width: 100vw;
+    background-color: aquamarine;
   }
 
   & .name {
