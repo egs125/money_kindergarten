@@ -3,10 +3,17 @@ import { IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import * as cm from 'share/common';
 
-const Wish = ({ item, actionHandler, showDelBtn, deleteWishList }) => {
+const Wish = ({ item, actionHandler, showDelBtn, deleteWishList, onEventHandler }) => {
   return (
     <div id={item.id} className="wish-item" >
-      <div className={`wish-info${showDelBtn === item.id ? '-deletable' : ''}`} {...actionHandler}>
+      <div
+        className={`wish-info${showDelBtn === item.id ? '-deletable' : ''}`}
+        draggable
+        onClick={e => onEventHandler(e, item.id)}
+        onDoubleClick={e => onEventHandler(e, item.id)}
+        onDragEnd={e =>  onEventHandler(e, item.id)}
+        {...actionHandler}
+      >
         <div className="name">
           {item.itemName}
         </div>
@@ -26,7 +33,10 @@ const Wish = ({ item, actionHandler, showDelBtn, deleteWishList }) => {
   );
 };
 
-const WishList = ({ curMonth, totalWishAmount, curWishList, actionHandler, showDelBtn, deleteWishList }) => {
+const WishList = ({
+  curMonth, totalWishAmount, curWishList, actionHandler, showDelBtn, deleteWishList,
+  onEventHandler
+}) => {
   
   return (
     <>
@@ -37,7 +47,16 @@ const WishList = ({ curMonth, totalWishAmount, curWishList, actionHandler, showD
         {cm.addComma(totalWishAmount)}원
       </div>
       {Array.isArray(curWishList) &&
-        curWishList.map((item, index) => <Wish key={index} item={item} actionHandler={actionHandler} showDelBtn={showDelBtn} deleteWishList={deleteWishList} />)
+        curWishList.map((item, index) =>
+          <Wish
+            key={index}
+            item={item}
+            actionHandler={actionHandler}
+            showDelBtn={showDelBtn}
+            deleteWishList={deleteWishList}
+            onEventHandler={onEventHandler}
+          />
+        )
       }
     </>
   );
