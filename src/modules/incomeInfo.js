@@ -2,91 +2,170 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { dbService } from "fBase";
 
 // Action types
-const READ = 'income/READ';
-// const REGISTER = 'moneyInfo/REGISTER';
-// const LOGIN = 'userInfo/LOGIN';
-// const LOGOUT = 'userInfo/LOGOUT';
-// const SET_USER_LOGIN = 'userInfo/SET_USER_LOGIN';
-// const SET_USER_LOGOUT = 'userInfo/SET_USER_LOGOUT';
+const READ = 'incomeInfo/READ';
+const REGISTER = 'incomeInfo/REGISTER';
+const DELETE = 'incomeInfo/DELETE';
+const UPDATE = 'incomeInfo/UPDATE';
+const SET_INCOME_LIST = 'incomeInfo/SET_INCOME_LIST';
+const SUCCESS = 'incomeInfo/SUCCESS';
+const FAIL = 'incomeInfo/FAIL';
 
 // Action creators
-export const readIncome = obj => ({ type: READ, obj });
-// export const registerNewAccount = obj => ({ type: REGISTER, obj });
-// export const login = obj => ({ type: LOGIN, obj });
-// export const logout = () => ({ type: LOGOUT });
-// export const setUserLogin = user => ({ type: SET_USER_LOGIN, user });
-// export const setUserLogout = () => ({ type: SET_USER_LOGOUT });
+export const readIncomeList = obj => ({ type: READ, ...obj });
+export const registerNewIncome = obj => ({ type: REGISTER, obj });
+export const deleteIncome = obj => ({ type: DELETE, obj });
+export const updateIncome = obj => ({ type: UPDATE, obj });
 
 // saga
-function* readIncomeSaga(action) {
+function* readIncomeListSaga(action) {
   try {
-    console.log(action);
+    const { userEmail, month } = action;
+
+    const incomeList = yield call(async () => {
+      const incomeRefs = await dbService.collection('incomelists')
+        .doc(userEmail).collection(month).orderBy('priority', 'asc').get();
+      
+      const { docs } = incomeRefs;
+
+      if (docs) {
+        const tempArr = [];
+
+        docs.forEach(doc => {
+          if (doc.exists) {
+            tempArr.push({ id: doc.id, ...doc.data() });
+          }
+        });
+
+        return tempArr;
+      }
+    });
+
+    yield put({ type: SET_INCOME_LIST, incomeList, month });
   } catch (e) {
     console.log(e);
   }
 }
-// function* registerNewAccountSaga(action) {  
-//   try {
-//     const { email, password } = action.obj;
-//     const user = yield call(rsf.auth.createUserWithEmailAndPassword, email, password);
-//     yield put({ type: SET_USER_LOGIN, user });
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
 
-// function* loginSaga(action) {
-//   try {
-//     const { email, password } = action.obj;
-//     const user = yield call(rsf.auth.signInWithEmailAndPassword, email, password);
-//     yield put({ type: SET_USER_LOGIN, user });
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
+function* registerNewIncomeSaga(action) {
+  try {
+    const { userEmail, item, curYm } = action.obj;
 
-// function* logoutSaga() {
-//   try {
-//     yield call(rsf.auth.signOut);
-//     yield put({ type: SET_USER_LOGOUT });
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
+    const result = yield call(async () => {
+      return dbService.collection('incomelists')
+        .doc(userEmail).collection(curYm).add(item)
+        .then(result => {
+          return result;
+        })
+        .catch(error => {
+          console.log(error);
+          return null;
+        });
+    });
+
+    if (result) {
+      yield put({ type: SUCCESS, msg: '등록했습니다!' });
+    } else {
+      yield put({ type: FAIL, msg: '처리하지 못했습니다.' });
+    }
+
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* deleteIncomeSaga(action) {
+  try {
+    const { obj: { userEmail, month, id } } = action;
+
+    const result = yield call(async () => {
+      return dbService.collection('incomelists')
+        .doc(userEmail).collection(month).doc(id).delete()
+        .then(() => {
+          return true;
+        })
+        .catch(error => {
+          console.log(error);
+          return false;
+        });
+    });
+
+    if (result) {
+      yield put({ type: SUCCESS, msg: '삭제했습니다!' });
+      yield put({ type: READ, userEmail: userEmail, month: month });
+    } else {
+      yield put({ type: FAIL, msg: '처리하지 못했습니다.' });
+    }
+    
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* updateIncomeSaga(action) {
+  try {
+    const { userEmail, item, curYm } = action.obj;
+    
+    const result = yield call(async () => {
+      return dbService.collection('incomelists')
+        .doc(userEmail).collection(curYm).doc(item.id).update({ ...item })
+        .then(() => {
+          return true;
+        })
+        .catch(error => {
+          console.log(error);
+          return false;
+        });
+    });
+
+    if (result) {
+      yield put({ type: SUCCESS, msg: '수정했습니다!' });
+    } else {
+      yield put({ type: FAIL, msg: '처리하지 못했습니다.' });
+    }
+
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 export function* incomeInfoSaga() {
-  yield takeEvery(READ, readIncomeSaga);
-  // yield takeEvery(REGISTER, registerNewAccountSaga);
-  // yield takeEvery(LOGIN, loginSaga);
-  // yield takeEvery(LOGOUT, logoutSaga);
+  yield takeEvery(REGISTER, registerNewIncomeSaga);
+  yield takeEvery(READ, readIncomeListSaga);
+  yield takeEvery(DELETE, deleteIncomeSaga);
+  yield takeEvery(UPDATE, updateIncomeSaga);
 }
 
 // initial states
 const initialState = {
-  incomeObj: {},
+  incomeList: [],
+  incomeMsg: { msg: '', isError: false },
+  called: '',
 };
 
 // reducers
 export default function incomeInfo(state = initialState, action) {
   switch (action.type) {
+    case REGISTER:
+      return state;
     case READ:
       return state;
-    // case REGISTER:
-    //   return state;
-    // case LOGIN:
-    //   return state;
-    // case LOGOUT:
-    //   return state;
-    // case SET_USER_LOGIN:
-    //   return {
-    //     isLoggedIn: true,
-    //     userObj: action.user,
-    //   };
-    // case SET_USER_LOGOUT:
-    //   return {
-    //     isLoggedIn: false,
-    //     useObj: {},
-    //   };
+    case DELETE:
+      return state;
+    case UPDATE:
+      return state;
+    case SET_INCOME_LIST:
+      return {
+        incomeList: action.incomeList,
+        called: action.month,
+      };
+    case SUCCESS:
+      return {
+        incomeMsg: { msg: action.msg, isError: false },       
+      };
+    case FAIL:
+      return {
+        incomeMsg: { msg: action.msg, isError: true },       
+      };
     default:
       return state;
   }

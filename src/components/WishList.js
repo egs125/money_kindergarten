@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { IconButton } from '@material-ui/core';
-import { Edit, Delete } from '@material-ui/icons';
+import { Delete } from '@material-ui/icons';
 import * as cm from 'share/common';
 
 const WishList = ({
@@ -36,10 +36,6 @@ const WishList = ({
 
           {showDelBtn && showDelBtn === item.id && (
             <div className="icon">
-              {/* <IconButton onClick={() => deleteWishList(item.id)}>
-                <Edit />
-              </IconButton> */}
-
               <IconButton onClick={() => deleteWishList(item.id)}>
                 <Delete />
               </IconButton>

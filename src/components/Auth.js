@@ -50,7 +50,7 @@ const Auth = ({
       <div className="spacing-area" />
       <Button
         variant="contained"
-        color="success"
+        color="default"
         size="large"
         onClick={toggleRegisterProcess}
       >
