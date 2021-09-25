@@ -23,7 +23,7 @@ function* readWishListSaga(action) {
 
     const wishList = yield call(async () => {
       const wishRefs = await dbService.collection('wishlists')
-        .doc(userEmail).collection(month).get();
+        .doc(userEmail).collection(month).orderBy('priority', 'asc').get();
       
       const { docs } = wishRefs;
 
