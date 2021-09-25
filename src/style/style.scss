@@ -94,17 +94,83 @@ body {
 
 .child-container {
   @extend .flex-box-column;
-  position: fixed;
+  position: sticky;
   top: 50px;
   width: 100%;
   height: 100vh;
   align-items: center;
-  // justify-content: space-evenly;
+
+  .selected-month-box {
+    @extend .flex-box-column;
+    width: 100vw;
+  }
+
+  .vertical-empty-space {
+    height: 70px;
+  }
+
+  .selected-month-info-box {
+    @extend .flex-box-row;
+    justify-content: space-between;
+    height: 20vh;
+  }
+
+  .selected-month-texts {
+    width: 60vw;
+    font-size: 3vh;
+
+    & > .title {
+      margin: 10px 0;
+    }
+
+    & > .amount {
+      font-size: 5vh;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+}
+
+.item-list-container {
+  @extend .flex-box-column;
+  justify-content: flex-start;
+  width: 85vw;
+  height: 65vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.item-info-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 85vw;
+  height: 6vh;
+  margin-bottom: 3vh;
+
+  & .item-info-deletable {
+    width: 72vw;
+  }
+
+  & .item-info {
+    width: 100vw;
+  }
+
+  .icon {
+    @extend .flex-box-row;
+
+  }
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 0vh;
+  right: 5vw;
+  cursor: pointer;
 }
 
 .page-title {
   @extend .flex-box;
-  position: fixed;
   top: 10vh;
   justify-content: flex-start;
   align-items: center;
@@ -113,25 +179,7 @@ body {
   width: 85vw;
 }
 
-.total-amount {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 15vh;
-  font-size: 2em;
-  width: 85vw;
-  height: 6vh;
-  
-}
-
-.floating-btn {
-  position: fixed;
-  bottom: 7vh;
-  right: 15vw;
-  cursor: pointer;
-}
-
+// 상세 내용 조회 영역 스타일
 .item-container {
   position: fixed;
   top: 20vh;
@@ -154,42 +202,4 @@ body {
   & button {
     width: 40vw;
   }
-}
-
-.wish-item-list {
-  @extend .flex-box-column;
-  justify-content: flex-start;
-  position: relative;
-  top: 20vh;
-  overflow-y: auto;
-}
-
-.wish-item {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 85vw;
-  height: 6vh;
-  margin-bottom: 3vh;
-
-  & .wish-info-deletable {
-    width: 72vw;
-  }
-
-  & .wish-info {
-    width: 100vw;
-  }
-
-  & .name {
-    //
-  }
-
-  & .price {
-    //
-  }
-
-  & .icon {
-    //
-  }
-  
 }

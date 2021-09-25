@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
 
-const HomeContaier = (props) => {
+const HomeContaier = () => {
   const dispatch = useDispatch();
   
-  const { isLoggedIn, userObj } = useSelector(state => ({
-    isLoggedIn: state.userInfo.isLoggedIn,
+  const { userObj, wishList } = useSelector(state => ({
     userObj: state.userInfo.userObj,
+    wishList: state.wishInfo.wishList,
   }));
 
   return (

@@ -11,7 +11,7 @@ const ItemDetailContainer = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const { state: { type, actionType } } = location;
+  const { state: { type, actionType, targetItem, targetMonth } } = location;
 
   const { userObj, actionObj } = useSelector(state => ({
     userObj: state.userInfo.userObj,
@@ -52,7 +52,18 @@ const ItemDetailContainer = () => {
 
   // 돌아가기 버튼 클릭 이벤트 핸들러
   const onClickPrevBtn = () => {
-    history.push(`/${type}`);
+    // history.push(`/${type}`);
+    history.push({
+      pathname: `/${type}`,
+      state: { targetMonth },
+    });
+
+    /*
+    history.push({
+      pathname: '/add',
+      state: { type: 'wishList', actionType: 'add', targetMonth: `${curYear}-${curMonth}` },
+    });
+    */
   };
 
   // 저장 버튼 클릭 이벤트 핸들러
@@ -126,6 +137,7 @@ const ItemDetailContainer = () => {
     return `${typeText} ${actionText}`;
   };
 
+  // alert 메시지 변경 시 처리
   useEffect(() => {
     if (actionObj) {
       const { type = '', isSucceeded = false, msg = '' } = actionObj;
@@ -136,8 +148,16 @@ const ItemDetailContainer = () => {
     }
   }, [actionObj]);
 
+  useEffect(() => {
+    console.log(targetItem, targetMonth);
+    if (targetItem) {
+      setItem(targetItem);
+    }
+  }, [targetItem, targetMonth]);
+
   return (
     <div className="child-container">
+      <div className="vertical-empty-space" />
       <div className="page-title">{mapPageTitle()}</div>
       <ItemDetail
         item={item}

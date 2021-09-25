@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { /*useLocation,*/ useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 const ToastMessage = () => {
 
-  const location = useLocation();
+  // const location = useLocation();
   const history = useHistory();
 
   const { isLoggedIn, authMsg, wishMsg } = useSelector(state => ({
@@ -28,6 +28,7 @@ const ToastMessage = () => {
       setAlertMessage(msg);
       setOpenAlert(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authMsg.msg]);
 
   useEffect(() => {
@@ -43,10 +44,7 @@ const ToastMessage = () => {
       }
     }
     
-  }, [wishMsg]);
-
-
-  console.log(location);
+  }, [wishMsg, isLoggedIn]);
   
   return (
     <Snackbar open={openAlert} autoHideDuration={3000} onClose={toggleAlert}>
