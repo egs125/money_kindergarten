@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/money_kindergarten/static/css/main.4abb29cf.chunk.css",
-    "main.js": "/money_kindergarten/static/js/main.5b6f5dc3.chunk.js",
-    "main.js.map": "/money_kindergarten/static/js/main.5b6f5dc3.chunk.js.map",
+    "main.css": "/money_kindergarten/static/css/main.383460d8.chunk.css",
+    "main.js": "/money_kindergarten/static/js/main.9dce10aa.chunk.js",
+    "main.js.map": "/money_kindergarten/static/js/main.9dce10aa.chunk.js.map",
     "runtime-main.js": "/money_kindergarten/static/js/runtime-main.f3c129bd.js",
     "runtime-main.js.map": "/money_kindergarten/static/js/runtime-main.f3c129bd.js.map",
-    "static/js/2.31e03ba3.chunk.js": "/money_kindergarten/static/js/2.31e03ba3.chunk.js",
-    "static/js/2.31e03ba3.chunk.js.map": "/money_kindergarten/static/js/2.31e03ba3.chunk.js.map",
+    "static/js/2.3e6bae16.chunk.js": "/money_kindergarten/static/js/2.3e6bae16.chunk.js",
+    "static/js/2.3e6bae16.chunk.js.map": "/money_kindergarten/static/js/2.3e6bae16.chunk.js.map",
     "index.html": "/money_kindergarten/index.html",
-    "static/css/main.4abb29cf.chunk.css.map": "/money_kindergarten/static/css/main.4abb29cf.chunk.css.map",
-    "static/js/2.31e03ba3.chunk.js.LICENSE.txt": "/money_kindergarten/static/js/2.31e03ba3.chunk.js.LICENSE.txt"
+    "static/css/main.383460d8.chunk.css.map": "/money_kindergarten/static/css/main.383460d8.chunk.css.map",
+    "static/js/2.3e6bae16.chunk.js.LICENSE.txt": "/money_kindergarten/static/js/2.3e6bae16.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.f3c129bd.js",
-    "static/js/2.31e03ba3.chunk.js",
-    "static/css/main.4abb29cf.chunk.css",
-    "static/js/main.5b6f5dc3.chunk.js"
+    "static/js/2.3e6bae16.chunk.js",
+    "static/css/main.383460d8.chunk.css",
+    "static/js/main.9dce10aa.chunk.js"
   ]
 }
