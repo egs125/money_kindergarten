@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import moment from 'moment';
-import { registerNewWish } from 'modules/wishInfo';
+import { registerNewWish, updateWish } from 'modules/wishInfo';
 import ItemDetail from 'components/ItemDetail';
 
 const ItemDetailContainer = () => {
@@ -13,9 +12,8 @@ const ItemDetailContainer = () => {
 
   const { state: { type, actionType, targetItem, targetMonth } } = location;
 
-  const { userObj, actionObj } = useSelector(state => ({
+  const { userObj } = useSelector(state => ({
     userObj: state.userInfo.userObj,
-    actionObj: state.wishInfo.actionObj,
   }));
 
   const [item, setItem] = useState({
@@ -24,8 +22,6 @@ const ItemDetailContainer = () => {
     itemPrice: 0,
     remark: '',
   });
-
-  const curYm = moment().format('YYYY-MM');
 
   // 항목 변경 이벤트 핸들러
   const onChangeItem = (e) => {
@@ -52,24 +48,17 @@ const ItemDetailContainer = () => {
 
   // 돌아가기 버튼 클릭 이벤트 핸들러
   const onClickPrevBtn = () => {
-    // history.push(`/${type}`);
     history.push({
       pathname: `/${type}`,
       state: { targetMonth },
     });
-
-    /*
-    history.push({
-      pathname: '/add',
-      state: { type: 'wishList', actionType: 'add', targetMonth: `${curYear}-${curMonth}` },
-    });
-    */
   };
 
   // 저장 버튼 클릭 이벤트 핸들러
   const onClickSubmitBtn = () => {
     const action = mapActions();
     const param = mapParamObj();
+
     dispatch(action(param));
   };
 
@@ -79,6 +68,7 @@ const ItemDetailContainer = () => {
 
     const wishActionMap = new Map([
       ['add', registerNewWish],
+      ['update', updateWish],
     ]);
 
     switch (type) {
@@ -98,13 +88,11 @@ const ItemDetailContainer = () => {
 
     switch (type) {
       case 'wishList':
-        if (actionType === 'add') {
-          paramObj = {
-            userEmail: userObj.user.email,
-            item,
-            curYm,
-          };
-        }
+        paramObj = {
+          userEmail: userObj.user.email,
+          item,
+          curYm: targetMonth,
+        };
         break;
       default:
         break;
@@ -130,6 +118,9 @@ const ItemDetailContainer = () => {
       case 'add':
         actionText = '추가';
         break;
+      case 'update':
+        actionText = '수정';
+        break;
       default:
         break;
     }
@@ -137,19 +128,7 @@ const ItemDetailContainer = () => {
     return `${typeText} ${actionText}`;
   };
 
-  // alert 메시지 변경 시 처리
   useEffect(() => {
-    if (actionObj) {
-      const { type = '', isSucceeded = false, msg = '' } = actionObj;
-
-      if (isSucceeded && actionType === type) {
-        console.log(msg);
-      }
-    }
-  }, [actionObj]);
-
-  useEffect(() => {
-    console.log(targetItem, targetMonth);
     if (targetItem) {
       setItem(targetItem);
     }

@@ -2,8 +2,8 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { dbService } from "fBase";
 
 // Action types
-const REGISTER = 'wishInfo/REGISTER';
 const READ = 'wishInfo/READ';
+const REGISTER = 'wishInfo/REGISTER';
 const DELETE = 'wishInfo/DELETE';
 const UPDATE = 'wishInfo/UPDATE';
 const SET_WISH_LIST = 'wishList/SET_WISH_LIST';
@@ -11,12 +11,41 @@ const SUCCESS = 'wishList/SUCCESS';
 const FAIL = 'wishList/FAIL';
 
 // Action creators
+export const readWishList = obj => ({ type: READ, ...obj });
 export const registerNewWish = obj => ({ type: REGISTER, obj });
-export const readWishList = obj=> ({ type: READ, ...obj });
 export const deleteWish = obj => ({ type: DELETE, obj });
 export const updateWish = obj => ({ type: UPDATE, obj });
 
 // saga
+function* readWishListSaga(action) {
+  try {
+    const { userEmail, month } = action;
+
+    const wishList = yield call(async () => {
+      const wishRefs = await dbService.collection('wishlists')
+        .doc(userEmail).collection(month).get();
+      
+      const { docs } = wishRefs;
+
+      if (docs) {
+        const tempArr = [];
+
+        docs.forEach(doc => {
+          if (doc.exists) {
+            tempArr.push({ id: doc.id, ...doc.data() });
+          }
+        });
+
+        return tempArr;
+      }
+    });
+
+    yield put({ type: SET_WISH_LIST, wishList, month });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function* registerNewWishSaga(action) {
   try {
     const { userEmail, item, curYm } = action.obj;
@@ -39,31 +68,6 @@ function* registerNewWishSaga(action) {
       yield put({ type: FAIL, msg: '처리하지 못했습니다.' });
     }
 
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-function* readWishListSaga(action) {
-  try {
-    const { userEmail, month } = action;
-
-    const wishList = yield call(async () => {
-      const wishRefs = await dbService.collection('wishlists')
-        .doc(userEmail).collection(month).get();
-      
-      const { docs } = wishRefs;
-
-      if (docs) {
-        return docs.map(doc => {
-          if (doc.exists) {
-            return { id: doc.id, ...doc.data() };
-          }
-        });
-      }
-    });
-
-    yield put({ type: SET_WISH_LIST, wishList, month });
   } catch (e) {
     console.log(e);
   }
@@ -99,10 +103,26 @@ function* deleteWishSaga(action) {
 
 function* updateWishSaga(action) {
   try {
-    console.log(action);
-    // dbService.doc(`mukkit/${mukkit.id}`).update({
-    //     isVisited: true,
-    //   }); 
+    const { userEmail, item, curYm } = action.obj;
+    
+    const result = yield call(async () => {
+      return dbService.collection('wishlists')
+        .doc(userEmail).collection(curYm).doc(item.id).update({ ...item })
+        .then(() => {
+          return true;
+        })
+        .catch(error => {
+          console.log(error);
+          return false;
+        });
+    });
+
+    if (result) {
+      yield put({ type: SUCCESS, msg: '수정했습니다!' });
+    } else {
+      yield put({ type: FAIL, msg: '처리하지 못했습니다.' });
+    }
+
   } catch (e) {
     console.log(e);
   }
