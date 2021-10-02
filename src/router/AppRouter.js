@@ -27,7 +27,7 @@ const AppRouter = () => {
             <Route exact path="/wishList">
               <WishListContainer />
             </Route>
-            <Route exact path="/income">
+            <Route exact path="/incomes">
               <IncomeContainer />
             </Route>
             <Route exact path="/expense">

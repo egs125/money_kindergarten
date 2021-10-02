@@ -73,7 +73,7 @@ const NavBar = () => {
             <ListItem
               button
               className="nav-drawer-last-item"
-              onClick={() => onMovePage('income')}
+              onClick={() => onMovePage('incomes')}
             >
               <span>수입</span>
             </ListItem>

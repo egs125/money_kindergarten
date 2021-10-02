@@ -22,8 +22,8 @@ function* readIncomeListSaga(action) {
     const { userEmail, month } = action;
 
     const incomeList = yield call(async () => {
-      const incomeRefs = await dbService.collection('incomelists')
-        .doc(userEmail).collection(month).orderBy('priority', 'asc').get();
+      const incomeRefs = await dbService.collection('incomes')
+        .doc(userEmail).collection(month).get();
       
       const { docs } = incomeRefs;
 
@@ -51,7 +51,7 @@ function* registerNewIncomeSaga(action) {
     const { userEmail, item, curYm } = action.obj;
 
     const result = yield call(async () => {
-      return dbService.collection('incomelists')
+      return dbService.collection('incomes')
         .doc(userEmail).collection(curYm).add(item)
         .then(result => {
           return result;
@@ -78,7 +78,7 @@ function* deleteIncomeSaga(action) {
     const { obj: { userEmail, month, id } } = action;
 
     const result = yield call(async () => {
-      return dbService.collection('incomelists')
+      return dbService.collection('incomes')
         .doc(userEmail).collection(month).doc(id).delete()
         .then(() => {
           return true;
@@ -106,7 +106,7 @@ function* updateIncomeSaga(action) {
     const { userEmail, item, curYm } = action.obj;
     
     const result = yield call(async () => {
-      return dbService.collection('incomelists')
+      return dbService.collection('incomes')
         .doc(userEmail).collection(curYm).doc(item.id).update({ ...item })
         .then(() => {
           return true;

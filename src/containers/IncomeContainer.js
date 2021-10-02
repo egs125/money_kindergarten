@@ -49,7 +49,7 @@ const IncomeContainer = () => {
   const moveToAddIncomeList = () => {
     history.push({
       pathname: '/add',
-      state: { type: 'incomeList', actionType: 'add', targetMonth: `${curYear}-${curMonth}` },
+      state: { type: 'incomes', actionType: 'add', targetMonth: `${curYear}-${curMonth}` },
     });
   };
 
@@ -61,7 +61,7 @@ const IncomeContainer = () => {
       history.push({
         pathname: '/add',
         state: {
-          type: 'incomeList',
+          type: 'incomes',
           actionType: 'update',
           targetItem: selectedItem,
           targetMonth: `${curYear}-${curMonth}`
@@ -127,15 +127,15 @@ const IncomeContainer = () => {
     }
   };
 
-  // 장바구니 목록 조회
+  // 수입 목록 조회
   const getIncomeList = useCallback(() => {
     dispatch(readIncomeList({ userEmail: userObj.user.email, month: moment().format(`${curYear}-${curMonth}`) }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curYear, curMonth, userObj.user.email]);
 
-  // 장바구니 목록 조회 결과 변경 시 세팅
+  // 수입 목록 조회 결과 변경 시 세팅
   const setIncomeList = useCallback(() => {
-    const totalAmount = Array.isArray(incomeList) ? incomeList.reduce((sum, item) => sum += item.itemPrice, 0) : 0;
+    const totalAmount = Array.isArray(incomeList) ? incomeList.reduce((sum, item) => sum += item.itemAmount, 0) : 0;
 
     setCurIncomeList(incomeList);
     setTotalIncomeAmount(totalAmount);
@@ -177,7 +177,7 @@ const IncomeContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curMonth, location]);
 
-  // 장바구니 데이터 조회 후 항목 세팅
+  // 수입 데이터 조회 후 항목 세팅
   useEffect(() => {
     setIncomeList();
     // eslint-disable-next-line react-hooks/exhaustive-deps

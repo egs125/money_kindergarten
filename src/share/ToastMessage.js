@@ -9,10 +9,11 @@ const ToastMessage = () => {
   // const location = useLocation();
   const history = useHistory();
 
-  const { isLoggedIn, authMsg, wishMsg } = useSelector(state => ({
+  const { isLoggedIn, authMsg, wishMsg, incomeMsg } = useSelector(state => ({
     isLoggedIn: state.userInfo.isLoggedIn,
     authMsg: state.userInfo.authMsg,  // 신규등록 or 로그인 시 에러 메시지
     wishMsg: state.wishInfo.wishMsg,  // 장바구니 스토어 액션 처리 후 메시지
+    incomeMsg: state.incomeInfo.incomeMsg, // 수입 스토어 액션 처리 후 메시지
   }));
 
   const [openAlert, setOpenAlert] = useState(false);
@@ -45,6 +46,20 @@ const ToastMessage = () => {
     }
     
   }, [wishMsg, isLoggedIn]);
+
+  useEffect(() => {
+    // 수입 등록/삭제/수정 처리 후 처리 메시지 출력
+    if (incomeMsg) {
+      const { msg, isError } = incomeMsg;
+      if (isLoggedIn && msg !== '') {
+        setAlertMessage(msg);
+        if (!isError) {
+          setAlertType('success');
+        }
+        setOpenAlert(true);
+      }
+    }
+  }, [incomeMsg, isLoggedIn])
   
   return (
     <Snackbar open={openAlert} autoHideDuration={3000} onClose={toggleAlert}>
