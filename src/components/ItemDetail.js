@@ -1,7 +1,16 @@
+import 'date-fns';
 import React from 'react';
-import { TextField, Button, FormControl, InputLabel, NativeSelect } from '@material-ui/core';
+import {
+  TextField, Button, FormControl, InputLabel, NativeSelect,
+  FormGroup, FormControlLabel, Checkbox
+} from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 
-const ItemDetail = ({ type, item, onChangeItem, onClickPrevBtn, onClickSubmitBtn }) => (
+const ItemDetail = ({
+  type, item,
+  onChangeItem, onClickPrevBtn, onClickSubmitBtn, onClickMovingCheckBox
+}) => (
   <div className="item-container">
     <div className="item-detail">
       {type === 'incomes' ? (
@@ -11,7 +20,8 @@ const ItemDetail = ({ type, item, onChangeItem, onClickPrevBtn, onClickSubmitBtn
               구분
             </InputLabel>
             <NativeSelect
-              defaultValue={30}
+              defaultValue="salary"
+              value={item.itemType}
               inputProps={{
                 name: 'itemType',
                 id: 'item-type-native',
@@ -66,7 +76,41 @@ const ItemDetail = ({ type, item, onChangeItem, onClickPrevBtn, onClickSubmitBtn
             onChange={onChangeItem}
           />
         </>
-      )}   
+      )}
+
+      {type === 'wishList' && (
+        <>
+          <FormGroup>
+            <FormControlLabel
+              control={<Checkbox defaultChecked onChange={onClickMovingCheckBox} />}
+              label="구매 완료!"
+            />
+          </FormGroup>
+          {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePicker
+              views={["year", "month"]}
+              label="Year and Month"
+              // helperText="With min and max"
+              // minDate={new Date("2018-03-01")}
+              // maxDate={new Date("2018-06-01")}
+              // value={selectedDate}
+              // onChange={handleDateChange}
+            />
+          </MuiPickersUtilsProvider> */}
+          
+          {/* <DatePicker
+            views={['year', 'month']}
+            label="Year and Month"
+            minDate={new Date('2012-03-01')}
+            maxDate={new Date('2023-06-01')}
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} helperText={null} />}
+          /> */}
+        </>
+      )}
     </div>
     
     <div className="item-btn-area">

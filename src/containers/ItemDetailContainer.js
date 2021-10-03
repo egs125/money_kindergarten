@@ -3,6 +3,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { registerNewWish, updateWish } from 'modules/wishInfo';
 import { registerNewIncome, updateIncome } from 'modules/incomeInfo';
+import { registerNewExpense, updateExpense } from 'modules/expenseInfo';
 import ItemDetail from 'components/ItemDetail';
 
 const ItemDetailContainer = () => {
@@ -17,25 +18,35 @@ const ItemDetailContainer = () => {
     userObj: state.userInfo.userObj,
   }));
 
+  const [openDatePicker, setOpenDatePicker] = useState(false);
+
   const [item, setItem] = useState(() => {
-    const defaultItem = {
-      priority: '',
-      itemName: '',
-      itemPrice: 0,
+    const tempItem = {
       remark: '',
     };
 
-    if (type === 'incomes') {
-      delete defaultItem.priority;
-      delete defaultItem.itemName;
-      delete defaultItem.itemPrice;
-      
-      defaultItem.itemType = 'salary';
-      defaultItem.itemTypeName = '급여';
-      defaultItem.itemAmount = 0;
+    switch (type) {
+      case 'incomes':
+        tempItem.priority = '';
+        tempItem.itemName = '';
+        tempItem.itemAmount = 0;
+        break;
+      case 'expense':
+        tempItem.itemType = 'salary';
+        tempItem.itemTypeName = '급여';
+        tempItem.itemPrice = 0;
+        break;
+      case 'wishList':
+        tempItem.priority = '';
+        tempItem.itemName = '';
+        tempItem.itemPrice = 0;
+        tempItem.isPurchased = false;
+        break;
+      default:
+        break;
     }
 
-    return defaultItem;
+    return tempItem;
   });
 
   // 항목 변경 이벤트 핸들러
@@ -84,9 +95,22 @@ const ItemDetailContainer = () => {
   // 저장 버튼 클릭 이벤트 핸들러
   const onClickSubmitBtn = () => {
     const action = mapActions();
-    const param = mapParamObj();
+    const param = {
+      userEmail: userObj.user.email,
+      item,
+      curYm: targetMonth,
+    };
 
     dispatch(action(param));
+  };
+
+  const onClickMovingCheckBox = e => {
+    console.log(e, item);
+    const { target: { checked } } = e;
+
+    if (checked) {
+      setOpenDatePicker(true);
+    }
   };
 
   // action 유형에 따라 module action mapping
@@ -103,12 +127,20 @@ const ItemDetailContainer = () => {
       ['update', updateIncome],
     ]);
 
+    const expenseActionMap = new Map([
+      ['add', registerNewExpense],
+      ['update', updateExpense],
+    ]);
+
     switch (type) {
       case 'wishList':
         action = wishActionMap.get(actionType);
         break;
       case 'incomes':
         action = incomeActionMap.get(actionType);
+        break;
+      case 'expense':
+        action = expenseActionMap.get(actionType);
         break;
       default:
         break;
@@ -117,30 +149,14 @@ const ItemDetailContainer = () => {
     return action;
   };
 
-  // action 유형에 따라 parameter mapping
-  const mapParamObj = () => {
-    let paramObj = {};
-
-    switch (type) {
-      case 'wishList':
-      case 'incomes':
-        paramObj = {
-          userEmail: userObj.user.email,
-          item,
-          curYm: targetMonth,
-        };
-        break;
-      default:
-        break;
-    }
-
-    return paramObj;
-  };
-
   // detail page title mapping
   const mapPageTitle = () => {
+    let ym = '';
     let typeText = '';
     let actionText = '';
+
+    const tempYm = targetMonth.split('-');
+    ym = `${tempYm[0]}년 ${Number(tempYm[1])}월`;
 
     switch (type) {
       case 'wishList':
@@ -148,6 +164,9 @@ const ItemDetailContainer = () => {
         break;
       case 'incomes':
         typeText = '수입';
+        break;
+      case 'expense':
+        typeText = '지출';
         break;
       default:
         break;
@@ -164,7 +183,7 @@ const ItemDetailContainer = () => {
         break;
     }
 
-    return `${typeText} ${actionText}`;
+    return `${ym} ${typeText} ${actionText}`;
   };
 
   useEffect(() => {
@@ -183,6 +202,7 @@ const ItemDetailContainer = () => {
         onChangeItem={onChangeItem}
         onClickPrevBtn={onClickPrevBtn}
         onClickSubmitBtn={onClickSubmitBtn}
+        onClickMovingCheckBox={onClickMovingCheckBox}
       />
     </div>
   )

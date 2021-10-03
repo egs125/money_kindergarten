@@ -6,7 +6,7 @@ import { useSwipeable } from 'react-swipeable';
 import { readWishList, deleteWish } from 'modules/wishInfo';
 import * as cm from 'share/common';
 import FloatingAddBtn from 'share/FloatingAddBtn';
-import WishList from 'components/WishList';
+import ItemList from 'components/ItemList';
 import { IconButton } from '@material-ui/core';
 import { ArrowBackIos, ArrowForwardIos } from '@material-ui/icons';
 
@@ -98,15 +98,16 @@ const WishListContainer = () => {
 
         if (touchPosition.x === xPos && touchPosition.y === yPos) {
           // 동일 위치 터치 시 상세정보 조회 이벤트 트리거
-          if (showDelBtn === id) {
-            // 이미 선택된 아이템 터치 시 상세 
-            updateWishList(id);
-          } else {
-            // 다른 아이템 선택 시 선택 정보 초기화
+          if (showDelBtn) {
+            // 삭제 버튼 활성화 상태에서 터치 시 삭제 버튼 비활성화
             setShowDelBtn('');
             setTouchPosition({ x: '', y: '' });
+          } else {
+            // 상세 정보 화면으로 이동
+            updateWishList(id);
           }
         } else {
+          // 스와이프하여 x 좌표 이동 거리가 더 길 경우 삭제 버튼 활성화
           let targetId;
         
           const distanceX = Math.abs(touchPosition.x - e.changedTouches[0].pageX);
@@ -215,11 +216,12 @@ const WishListContainer = () => {
         </div>
       </div>
        
-      <WishList
-        curWishList={curWishList}
+      <ItemList
+        type="wishList"
+        curItemList={curWishList}
         actionHandler={actionHandler}
         showDelBtn={showDelBtn}
-        deleteWishList={deleteWishList}
+        deleteItem={deleteWishList}
         onEventHandler={onEventHandler}
       />
       <FloatingAddBtn movePage={moveToAddWishList} />

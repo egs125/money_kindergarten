@@ -2,10 +2,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import { readIncomeList, deleteIncome } from 'modules/incomeInfo';
+import { readIncomeList, deleteIncome, updateIncome } from 'modules/incomeInfo';
 import * as cm from 'share/common';
 import FloatingAddBtn from 'share/FloatingAddBtn';
-import IncomeList from 'components/IncomeList';
+import ItemList from 'components/ItemList';
 import { IconButton } from '@material-ui/core';
 import { ArrowBackIos, ArrowForwardIos } from '@material-ui/icons';
 
@@ -29,7 +29,7 @@ const IncomeContainer = () => {
   const [showDelBtn, setShowDelBtn] = useState(false);
   const [touchPosition, setTouchPosition] = useState({ x: '', y: '' });
 
-// 상단 화살표 버튼 클릭 이벤트 핸들러
+  // 상단 화살표 버튼 클릭 이벤트 핸들러
   const onClickArrowBtn = flag => {
     let newlySelectedMonth = '';
 
@@ -54,7 +54,7 @@ const IncomeContainer = () => {
   };
 
   // 상세 정보 조회 이벤트 핸들러
-  const updateWishList = id => {
+  const updateIncomeList = id => {
     const selectedItem = Array.isArray(curIncomeList) && curIncomeList.find(item => item.id === id);
 
     if (selectedItem) {
@@ -97,15 +97,16 @@ const IncomeContainer = () => {
 
         if (touchPosition.x === xPos && touchPosition.y === yPos) {
           // 동일 위치 터치 시 상세정보 조회 이벤트 트리거
-          if (showDelBtn === id) {
-            // 이미 선택된 아이템 터치 시 상세 
-            updateWishList(id);
-          } else {
-            // 다른 아이템 선택 시 선택 정보 초기화
+          if (showDelBtn) {
+            // 삭제 버튼 활성화 상태에서 터치 시 삭제 버튼 비활성화
             setShowDelBtn('');
             setTouchPosition({ x: '', y: '' });
+          } else {
+            // 상세 정보 화면으로 이동
+            updateIncomeList(id);
           }
         } else {
+          // 스와이프하여 x 좌표 이동 거리가 더 길 경우 삭제 버튼 활성화
           let targetId;
         
           const distanceX = Math.abs(touchPosition.x - e.changedTouches[0].pageX);
@@ -208,10 +209,11 @@ const IncomeContainer = () => {
         </div>
       </div>
        
-      <IncomeList
-        curIncomeList={curIncomeList}
+      <ItemList
+        type="income"
+        curItemList={curIncomeList}
         showDelBtn={showDelBtn}
-        deleteIncomeList={deleteIncomeList}
+        deleteItem={deleteIncomeList}
         onEventHandler={onEventHandler}
       />
       <FloatingAddBtn movePage={moveToAddIncomeList} />
