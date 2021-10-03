@@ -21,7 +21,7 @@ const IncomeList = ({
               onTouchStart={e => onEventHandler(e, item.id)}
               onTouchEnd={e => onEventHandler(e, item.id)}
             >
-              <div>
+              <div className="item-text">
                 {item.itemTypeName}
               </div>
               <div>

@@ -149,16 +149,22 @@ body {
   margin-bottom: 3vh;
 
   & .item-info-deletable {
-    width: 72vw;
+    width: 70vw;
   }
 
   & .item-info {
     width: 100vw;
   }
 
+  & .item-text {
+    color: #4c5996;
+    font-size: 2vh;
+  }
+
   .icon {
     @extend .flex-box-row;
-
+    width: 3vw;
+    height: 3vh;
   }
 }
 

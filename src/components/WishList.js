@@ -20,13 +20,11 @@ const WishList = ({
           <div
             className={`item-info${showDelBtn === item.id ? '-deletable' : ''}`}
             draggable
-            // onClick={e => onEventHandler(e, item.id)}
-            // onDoubleClick={e => onEventHandler(e, item.id)}
             onTouchStart={e => onEventHandler(e, item.id)}
             onTouchEnd={e => onEventHandler(e, item.id)}
             {...actionHandler}
           >
-            <div>
+            <div className="item-text">
               {item.itemName}
             </div>
             <div>
