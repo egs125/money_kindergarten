@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import NavBar from 'components/NavBar';
 import HomeContainer from 'containers/HomeContainer';
 import AuthContainer from 'containers/AuthContainer';
-import WishListContainer from "containers/WishListContainer";
 import IncomeContainer from "containers/IncomeContainer";
 import ExpenseContainer from "containers/ExpenseContainer";
 import ItemDetailContainer from "containers/ItemDetailContainer";
@@ -24,10 +23,7 @@ const AppRouter = () => {
             <Route exact path="/">
               <HomeContainer />
             </Route>
-            <Route exact path="/wishList">
-              <WishListContainer />
-            </Route>
-            <Route exact path="/incomes">
+            <Route exact path="/income">
               <IncomeContainer />
             </Route>
             <Route exact path="/expense">

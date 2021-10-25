@@ -130,9 +130,9 @@ const ExpenseContainer = () => {
 
   // 수입 목록 조회
   const getExpenseList = useCallback(() => {
-    dispatch(readExpenseList({ userEmail: userObj.user.email, month: moment().format(`${curYear}-${curMonth}`) }));
+    dispatch(readExpenseList({ month: moment().format(`${curYear}-${curMonth}`) }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curYear, curMonth, userObj.user.email]);
+  }, [curYear, curMonth]);
 
   // 수입 목록 조회 결과 변경 시 세팅
   const setExpenseList = useCallback(() => {
@@ -168,7 +168,7 @@ const ExpenseContainer = () => {
         setCurYear(tempYear);
         setCurMonth(tempMonth);
 
-        dispatch(readExpenseList({ userEmail: userObj.user.email, month: moment().format(`${tempYear}-${tempMonth}`) }));
+        dispatch(readExpenseList({ month: moment().format(`${tempYear}-${tempMonth}`) }));
       } else {
         setData();
       }
@@ -196,7 +196,7 @@ const ExpenseContainer = () => {
           
           <div className="selected-month-texts">
             <div className="title">
-              {cm.trimMonth(curMonth)}월 지출
+              {cm.trimMonth(curMonth)}월 사용금액
             </div>
             <div className="amount">
               {cm.addComma(totalExpenseAmount)}원

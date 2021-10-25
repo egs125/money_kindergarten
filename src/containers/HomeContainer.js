@@ -5,9 +5,8 @@ import moment from 'moment';
 const HomeContaier = () => {
   const dispatch = useDispatch();
   
-  const { userObj, wishList } = useSelector(state => ({
+  const { userObj } = useSelector(state => ({
     userObj: state.userInfo.userObj,
-    wishList: state.wishInfo.wishList,
   }));
 
   return (

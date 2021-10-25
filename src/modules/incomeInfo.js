@@ -19,14 +19,13 @@ export const updateIncome = obj => ({ type: UPDATE, obj });
 // saga
 function* readIncomeListSaga(action) {
   try {
-    const { userEmail, month } = action;
-
+    const { month } = action;
+    
     const incomeList = yield call(async () => {
-      const incomeRefs = await dbService.collection('incomes')
-        .doc(userEmail).collection(month).get();
-      
-      const { docs } = incomeRefs;
+      const incomeRefs = await dbService.collection('income').where('ym', '==', month).get();
 
+      const { docs } = incomeRefs;
+      
       if (docs) {
         const tempArr = [];
 
@@ -40,7 +39,7 @@ function* readIncomeListSaga(action) {
       }
     });
 
-    yield put({ type: SET_INCOME_LIST, incomeList, month });
+    yield put({ type: SET_INCOME_LIST, incomeList });
   } catch (e) {
     console.log(e);
   }
@@ -48,20 +47,18 @@ function* readIncomeListSaga(action) {
 
 function* registerNewIncomeSaga(action) {
   try {
-    const { userEmail, item, curYm } = action.obj;
+    const { item, curYm } = action.obj;
 
     const result = yield call(async () => {
-      return dbService.collection('incomes')
-        .doc(userEmail).collection(curYm).add(item)
-        .then(result => {
-          return result;
-        })
+      return dbService.collection('income')
+        .add({ ...item, ym: curYm })
+        .then(result => result)
         .catch(error => {
           console.log(error);
           return null;
         });
     });
-
+    
     if (result) {
       yield put({ type: SUCCESS, msg: '등록했습니다!' });
     } else {
@@ -75,11 +72,11 @@ function* registerNewIncomeSaga(action) {
 
 function* deleteIncomeSaga(action) {
   try {
-    const { obj: { userEmail, month, id } } = action;
+    const { obj: { month, id } } = action;
 
     const result = yield call(async () => {
-      return dbService.collection('incomes')
-        .doc(userEmail).collection(month).doc(id).delete()
+      return dbService.collection('income').doc(id)
+        .delete()
         .then(() => {
           return true;
         })
@@ -91,7 +88,7 @@ function* deleteIncomeSaga(action) {
 
     if (result) {
       yield put({ type: SUCCESS, msg: '삭제했습니다!' });
-      yield put({ type: READ, userEmail: userEmail, month: month });
+      yield put({ type: READ, month: month });
     } else {
       yield put({ type: FAIL, msg: '처리하지 못했습니다.' });
     }
@@ -103,11 +100,11 @@ function* deleteIncomeSaga(action) {
 
 function* updateIncomeSaga(action) {
   try {
-    const { userEmail, item, curYm } = action.obj;
+    const { item } = action.obj;
     
     const result = yield call(async () => {
-      return dbService.collection('incomes')
-        .doc(userEmail).collection(curYm).doc(item.id).update({ ...item })
+      return dbService.collection('income')
+        .doc(item.id).update({ ...item })
         .then(() => {
           return true;
         })
@@ -139,7 +136,6 @@ export function* incomeInfoSaga() {
 const initialState = {
   incomeList: [],
   incomeMsg: { msg: '', isError: false },
-  called: '',
 };
 
 // reducers
@@ -156,7 +152,6 @@ export default function incomeInfo(state = initialState, action) {
     case SET_INCOME_LIST:
       return {
         incomeList: action.incomeList,
-        called: action.month,
       };
     case SUCCESS:
       return {

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import { readIncomeList, deleteIncome, updateIncome } from 'modules/incomeInfo';
+import { readIncomeList, deleteIncome } from 'modules/incomeInfo';
 import * as cm from 'share/common';
 import FloatingAddBtn from 'share/FloatingAddBtn';
 import ItemList from 'components/ItemList';
@@ -16,10 +16,8 @@ const IncomeContainer = () => {
 
   const dispatch = useDispatch();
 
-  const { userObj, incomeList, called } = useSelector(state => ({
-    userObj: state.userInfo.userObj,
+  const { incomeList } = useSelector(state => ({
     incomeList: state.incomeInfo.incomeList,
-    called: state.incomeInfo.called,
   }));
 
   const [curYear, setCurYear] = useState(moment().format('YYYY'));
@@ -49,7 +47,7 @@ const IncomeContainer = () => {
   const moveToAddIncomeList = () => {
     history.push({
       pathname: '/add',
-      state: { type: 'incomes', actionType: 'add', targetMonth: `${curYear}-${curMonth}` },
+      state: { type: 'income', actionType: 'add', targetMonth: `${curYear}-${curMonth}` },
     });
   };
 
@@ -61,7 +59,7 @@ const IncomeContainer = () => {
       history.push({
         pathname: '/add',
         state: {
-          type: 'incomes',
+          type: 'income',
           actionType: 'update',
           targetItem: selectedItem,
           targetMonth: `${curYear}-${curMonth}`
@@ -73,7 +71,6 @@ const IncomeContainer = () => {
   // 삭제 버튼 클릭 이벤트 핸들러
   const deleteIncomeList = id => {
     dispatch(deleteIncome({
-      userEmail: userObj.user.email,
       month: moment().format(`${curYear}-${curMonth}`),
       id,
     }));
@@ -130,9 +127,9 @@ const IncomeContainer = () => {
 
   // 수입 목록 조회
   const getIncomeList = useCallback(() => {
-    dispatch(readIncomeList({ userEmail: userObj.user.email, month: moment().format(`${curYear}-${curMonth}`) }));
+    dispatch(readIncomeList({ month: moment().format(`${curYear}-${curMonth}`) }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curYear, curMonth, userObj.user.email]);
+  }, [curYear, curMonth]);
 
   // 수입 목록 조회 결과 변경 시 세팅
   const setIncomeList = useCallback(() => {
@@ -142,15 +139,6 @@ const IncomeContainer = () => {
     setTotalIncomeAmount(totalAmount);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [incomeList]);
-
-  // 컴포넌트 렌더에 필요한 데이터 조회 & 세팅
-  const setData = () => {
-    if (called === '' || called !== `${curYear}-${curMonth}`) {
-      getIncomeList();
-    } else {
-      setIncomeList();
-    }
-  };
 
   // 조회연월 또는 location 변경 시 조회
   useEffect(() => {
@@ -162,18 +150,13 @@ const IncomeContainer = () => {
 
       // 페이지 이동 시 사용하는 파라미터 제거
       history.replace({ state: undefined });
-      
-      if (tempYear !== curYear || tempMonth !== curMonth) {
-        
-        setCurYear(tempYear);
-        setCurMonth(tempMonth);
 
-        dispatch(readIncomeList({ userEmail: userObj.user.email, month: moment().format(`${tempYear}-${tempMonth}`) }));
-      } else {
-        setData();
-      }
+      setCurYear(tempYear);
+      setCurMonth(tempMonth);
+      
+      getIncomeList();
     } else {
-      setData();
+      getIncomeList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curMonth, location]);
@@ -196,7 +179,7 @@ const IncomeContainer = () => {
           
           <div className="selected-month-texts">
             <div className="title">
-              {cm.trimMonth(curMonth)}월 수입
+              {cm.trimMonth(curMonth)}월 충전금액
             </div>
             <div className="amount">
               {cm.addComma(totalIncomeAmount)}원

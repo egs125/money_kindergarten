@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
-import { registerNewWish, updateWish } from 'modules/wishInfo';
+import { useDispatch } from 'react-redux';
 import { registerNewIncome, updateIncome } from 'modules/incomeInfo';
 import { registerNewExpense, updateExpense } from 'modules/expenseInfo';
 import ItemDetail from 'components/ItemDetail';
@@ -14,33 +13,18 @@ const ItemDetailContainer = () => {
 
   const { state: { type, actionType, targetItem, targetMonth } } = location;
 
-  const { userObj } = useSelector(state => ({
-    userObj: state.userInfo.userObj,
-  }));
-
-  const [openDatePicker, setOpenDatePicker] = useState(false);
-
   const [item, setItem] = useState(() => {
     const tempItem = {
       remark: '',
     };
 
     switch (type) {
-      case 'incomes':
-        tempItem.priority = '';
-        tempItem.itemName = '';
+      case 'income':
         tempItem.itemAmount = 0;
         break;
       case 'expense':
-        tempItem.itemType = 'salary';
-        tempItem.itemTypeName = '급여';
         tempItem.itemPrice = 0;
-        break;
-      case 'wishList':
-        tempItem.priority = '';
-        tempItem.itemName = '';
-        tempItem.itemPrice = 0;
-        tempItem.isPurchased = false;
+        tempItem.itemType = '';
         break;
       default:
         break;
@@ -55,12 +39,6 @@ const ItemDetailContainer = () => {
     const tempItem = { ...item };
     let newValue = value;
 
-    const incomeTypeMap = new Map([
-      ['salary', '급여'],
-      ['financial', '금융 수입'],
-      ['etc', '기타 수입'],
-    ]);
-
     switch (name) {
       case 'priority':
       case 'itemPrice':
@@ -69,11 +47,6 @@ const ItemDetailContainer = () => {
         break;
       case 'itemName':
       case 'remark':
-        break;
-      case 'itemType':
-        if (type === 'incomes') {
-          tempItem.itemTypeName = incomeTypeMap.get(value);
-        }
         break;
       default:
         break;
@@ -96,7 +69,6 @@ const ItemDetailContainer = () => {
   const onClickSubmitBtn = () => {
     const action = mapActions();
     const param = {
-      userEmail: userObj.user.email,
       item,
       curYm: targetMonth,
     };
@@ -104,23 +76,9 @@ const ItemDetailContainer = () => {
     dispatch(action(param));
   };
 
-  const onClickMovingCheckBox = e => {
-    console.log(e, item);
-    const { target: { checked } } = e;
-
-    if (checked) {
-      setOpenDatePicker(true);
-    }
-  };
-
   // action 유형에 따라 module action mapping
   const mapActions = () => {
     let action = '';
-
-    const wishActionMap = new Map([
-      ['add', registerNewWish],
-      ['update', updateWish],
-    ]);
 
     const incomeActionMap = new Map([
       ['add', registerNewIncome],
@@ -133,10 +91,7 @@ const ItemDetailContainer = () => {
     ]);
 
     switch (type) {
-      case 'wishList':
-        action = wishActionMap.get(actionType);
-        break;
-      case 'incomes':
+      case 'income':
         action = incomeActionMap.get(actionType);
         break;
       case 'expense':
@@ -159,14 +114,11 @@ const ItemDetailContainer = () => {
     ym = `${tempYm[0]}년 ${Number(tempYm[1])}월`;
 
     switch (type) {
-      case 'wishList':
-        typeText = '장바구니';
-        break;
-      case 'incomes':
-        typeText = '수입';
+      case 'income':
+        typeText = '충전';
         break;
       case 'expense':
-        typeText = '지출';
+        typeText = '사용';
         break;
       default:
         break;
@@ -202,7 +154,6 @@ const ItemDetailContainer = () => {
         onChangeItem={onChangeItem}
         onClickPrevBtn={onClickPrevBtn}
         onClickSubmitBtn={onClickSubmitBtn}
-        onClickMovingCheckBox={onClickMovingCheckBox}
       />
     </div>
   )

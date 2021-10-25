@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { IconButton, List, ListItem, Divider } from '@material-ui/core';
 import { Menu, Close, MonetizationOn } from '@material-ui/icons';
-import { logout } from '../modules/userInfo';
+import { logout } from 'modules/userInfo';
 
 const NavBar = () => {
 
@@ -47,7 +47,7 @@ const NavBar = () => {
             <MonetizationOn />
           </IconButton>
         )}
-        <span className="app-title">재린이 유치원</span>
+        <span className="app-title">브카 이용내역서</span>
       </nav>
       {openDrawer && (
         <div className="nav-drawer">
@@ -60,22 +60,16 @@ const NavBar = () => {
             </ListItem>
             <ListItem
               button
-              onClick={() => onMovePage('wishList')}
-            >
-              <span>장바구니</span>
-            </ListItem>
-            <ListItem
-              button
               onClick={() => onMovePage('expense')}
             >
-              <span>지출</span>
+              <span>사용</span>
             </ListItem>
             <ListItem
               button
               className="nav-drawer-last-item"
-              onClick={() => onMovePage('incomes')}
+              onClick={() => onMovePage('income')}
             >
-              <span>수입</span>
+              <span>충전</span>
             </ListItem>
             {isLoggedIn && (
               <>

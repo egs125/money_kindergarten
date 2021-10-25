@@ -1,26 +1,22 @@
-import 'date-fns';
 import React from 'react';
 import {
   TextField, Button, FormControl, InputLabel, NativeSelect,
-  FormGroup, FormControlLabel, Checkbox
 } from '@material-ui/core';
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 
 const ItemDetail = ({
   type, item,
-  onChangeItem, onClickPrevBtn, onClickSubmitBtn, onClickMovingCheckBox
+  onChangeItem, onClickPrevBtn, onClickSubmitBtn,
 }) => (
   <div className="item-container">
     <div className="item-detail">
-      {type === 'incomes' ? (
+      {type === 'expense' ? (
         <>
           <FormControl fullWidth>
             <InputLabel variant="standard" htmlFor="item-type-native">
               구분
             </InputLabel>
             <NativeSelect
-              defaultValue="salary"
+              defaultValue="mart"
               value={item.itemType}
               inputProps={{
                 name: 'itemType',
@@ -28,16 +24,17 @@ const ItemDetail = ({
               }}
               onChange={onChangeItem}
             >
-              <option value="salary">급여</option>
-              <option value="financial">금융 수입</option>
-              <option value="etc">기타 수입</option>
+              <option value="mart">마트</option>
+              <option value="dineout">외식</option>
+              <option value="leisure">여가</option>
+              <option value="etc">기타</option>
             </NativeSelect>
           </FormControl>
           <TextField
             required
-            name="itemAmount"
+            name="itemPrice"
             label="금액"
-            value={item.itemAmount}
+            value={item.itemPrice}
             onChange={onChangeItem}
           />
           <TextField
@@ -51,22 +48,9 @@ const ItemDetail = ({
         <>
           <TextField
             required
-            name="itemName"
-            label="품목명"
-            value={item.itemName}
-            onChange={onChangeItem}
-          />
-          <TextField
-            required
-            name="itemPrice"
+            name="itemAmount"
             label="금액"
-            value={item.itemPrice}
-            onChange={onChangeItem}
-          />
-          <TextField
-            name="priority"
-            label="우선순위"
-            value={item.priority}
+            value={item.itemAmount}
             onChange={onChangeItem}
           />
           <TextField
@@ -75,40 +59,6 @@ const ItemDetail = ({
             value={item.remark}
             onChange={onChangeItem}
           />
-        </>
-      )}
-
-      {type === 'wishList' && (
-        <>
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox defaultChecked onChange={onClickMovingCheckBox} />}
-              label="구매 완료!"
-            />
-          </FormGroup>
-          {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DatePicker
-              views={["year", "month"]}
-              label="Year and Month"
-              // helperText="With min and max"
-              // minDate={new Date("2018-03-01")}
-              // maxDate={new Date("2018-06-01")}
-              // value={selectedDate}
-              // onChange={handleDateChange}
-            />
-          </MuiPickersUtilsProvider> */}
-          
-          {/* <DatePicker
-            views={['year', 'month']}
-            label="Year and Month"
-            minDate={new Date('2012-03-01')}
-            maxDate={new Date('2023-06-01')}
-            value={value}
-            onChange={(newValue) => {
-              setValue(newValue);
-            }}
-            renderInput={(params) => <TextField {...params} helperText={null} />}
-          /> */}
         </>
       )}
     </div>
