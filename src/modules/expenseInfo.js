@@ -101,7 +101,7 @@ function* deleteExpenseSaga(action) {
 
 function* updateExpenseSaga(action) {
   try {
-    const { item, curYm } = action.obj;
+    const { item } = action.obj;
     
     const result = yield call(async () => {
       return dbService.collection('expense')

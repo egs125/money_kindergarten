@@ -2,10 +2,16 @@ import React from 'react';
 import {
   TextField, Button, FormControl, InputLabel, NativeSelect,
 } from '@material-ui/core';
+// import moment from "moment";
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/src/stylesheets/datepicker.scss";
+import ko from 'date-fns/locale/ko';
+registerLocale('ko', ko);
 
 const ItemDetail = ({
   type, item,
-  onChangeItem, onClickPrevBtn, onClickSubmitBtn,
+  onChangeItem, onChangeDate,
+  onClickPrevBtn, onClickSubmitBtn,
 }) => (
   <div className="item-container">
     <div className="item-detail">
@@ -36,6 +42,17 @@ const ItemDetail = ({
             label="금액"
             value={item.itemPrice}
             onChange={onChangeItem}
+          />
+          <DatePicker
+            locale="ko"
+            selected={item.date}
+            onChange={onChangeDate}
+            dateFormat="yyyy-MM-dd"
+            customInput={<TextField label="일자" />}
+            popperModifiers={{ 
+              preventOverflow: { enabled: true, },
+            }}
+            popperPlacement="auto"
           />
           <TextField
             name="remark"

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { registerNewIncome, updateIncome } from 'modules/incomeInfo';
 import { registerNewExpense, updateExpense } from 'modules/expenseInfo';
 import ItemDetail from 'components/ItemDetail';
+// import moment from 'moment';
 
 const ItemDetailContainer = () => {
 
@@ -25,6 +26,7 @@ const ItemDetailContainer = () => {
       case 'expense':
         tempItem.itemPrice = 0;
         tempItem.itemType = '';
+        tempItem.date = new Date();
         break;
       default:
         break;
@@ -54,6 +56,12 @@ const ItemDetailContainer = () => {
 
     tempItem[name] = newValue;
 
+    setItem(tempItem);
+  };
+
+  const onChangeDate = date => {
+    const tempItem = { ...item };
+    tempItem.date = date;
     setItem(tempItem);
   };
 
@@ -152,6 +160,7 @@ const ItemDetailContainer = () => {
         type={type}
         item={item}
         onChangeItem={onChangeItem}
+        onChangeDate={onChangeDate}
         onClickPrevBtn={onClickPrevBtn}
         onClickSubmitBtn={onClickSubmitBtn}
       />
