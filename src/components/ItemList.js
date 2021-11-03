@@ -22,7 +22,7 @@ const ItemList = ({
             onTouchEnd={e => onEventHandler(e, item.id)}
           >
             <div className="item-text">
-              { type === 'income' ? item.itemTypeName : item.itemName}
+              { item.itemTypeName }
             </div>
             <div>
               { type === 'income' ? `${cm.addComma(item.itemAmount)}원` : `${cm.addComma(item.itemPrice)}원`}

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { registerNewIncome, updateIncome } from 'modules/incomeInfo';
 import { registerNewExpense, updateExpense } from 'modules/expenseInfo';
 import ItemDetail from 'components/ItemDetail';
-// import moment from 'moment';
+import moment from 'moment';
 
 const ItemDetailContainer = () => {
 
@@ -25,8 +25,9 @@ const ItemDetailContainer = () => {
         break;
       case 'expense':
         tempItem.itemPrice = 0;
-        tempItem.itemType = '';
         tempItem.date = new Date();
+        tempItem.itemType = 'mart';
+        tempItem.itemTypeName = '마트';
         break;
       default:
         break;
@@ -34,6 +35,14 @@ const ItemDetailContainer = () => {
 
     return tempItem;
   });
+
+  // 아이템 유형 mapping 객체
+  const itemTypeMap = new Map([
+    ["mart", "마트"],
+    ["dineout", "외식"],
+    ["leisure", "여가"],
+    ["etc", "기타"]
+  ]);
 
   // 항목 변경 이벤트 핸들러
   const onChangeItem = (e) => {
@@ -46,6 +55,9 @@ const ItemDetailContainer = () => {
       case 'itemPrice':
       case 'itemAmount':
         newValue = Number(newValue.replace(/[^0-9]/gi, ''));
+        break;
+      case 'itemType':
+        tempItem.itemTypeName = itemTypeMap.get(value);
         break;
       case 'itemName':
       case 'remark':
@@ -75,13 +87,18 @@ const ItemDetailContainer = () => {
 
   // 저장 버튼 클릭 이벤트 핸들러
   const onClickSubmitBtn = () => {
+    const paramItem = { ...item };
     const action = mapActions();
-    const param = {
-      item,
-      curYm: targetMonth,
-    };
 
-    dispatch(action(param));
+    if (type === 'expense') {
+      const { date } = paramItem;
+      paramItem.date = moment(date).format('YYYY-MM-DD');
+    }
+
+    dispatch(action({
+      item: paramItem,
+      curYm: targetMonth,
+    }));
   };
 
   // action 유형에 따라 module action mapping
@@ -148,6 +165,7 @@ const ItemDetailContainer = () => {
 
   useEffect(() => {
     if (targetItem) {
+      targetItem.date = new Date(targetItem.date);
       setItem(targetItem);
     }
   }, [targetItem, targetMonth]);

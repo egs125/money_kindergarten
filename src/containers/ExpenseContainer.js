@@ -16,10 +16,8 @@ const ExpenseContainer = () => {
 
   const dispatch = useDispatch();
 
-  const { userObj, expenseList, called } = useSelector(state => ({
-    userObj: state.userInfo.userObj,
+  const { expenseList } = useSelector(state => ({
     expenseList: state.expenseInfo.expenseList,
-    called: state.incomeInfo.called,
   }));
 
   const [curYear, setCurYear] = useState(moment().format('YYYY'));
@@ -73,7 +71,6 @@ const ExpenseContainer = () => {
   // 삭제 버튼 클릭 이벤트 핸들러
   const deleteExpenseList = id => {
     dispatch(deleteExpense({
-      userEmail: userObj.user.email,
       month: moment().format(`${curYear}-${curMonth}`),
       id,
     }));
@@ -143,15 +140,6 @@ const ExpenseContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expenseList]);
 
-  // 컴포넌트 렌더에 필요한 데이터 조회 & 세팅
-  const setData = () => {
-    if (called === '' || called !== `${curYear}-${curMonth}`) {
-      getExpenseList();
-    } else {
-      setExpenseList();
-    }
-  };
-
   // 조회연월 또는 location 변경 시 조회
   useEffect(() => {
     if (location && location.state && location.state.targetMonth) {
@@ -160,21 +148,37 @@ const ExpenseContainer = () => {
       const tempYear = tempArr[0];
       const tempMonth = tempArr[1];
 
+      setCurYear(tempYear);
+      setCurMonth(tempMonth);
+
       // 페이지 이동 시 사용하는 파라미터 제거
       history.replace({ state: undefined });
-      
-      if (tempYear !== curYear || tempMonth !== curMonth) {
-        
-        setCurYear(tempYear);
-        setCurMonth(tempMonth);
-
-        dispatch(readExpenseList({ month: moment().format(`${tempYear}-${tempMonth}`) }));
-      } else {
-        setData();
-      }
-    } else {
-      setData();
     }
+
+    getExpenseList();
+    
+    // if (location && location.state && location.state.targetMonth) {
+    //   // 페이지 이동 후 데이터 세팅
+    //   const tempArr = location.state.targetMonth.split('-');
+    //   const tempYear = tempArr[0];
+    //   const tempMonth = tempArr[1];
+
+    //   // 페이지 이동 시 사용하는 파라미터 제거
+    //   history.replace({ state: undefined });
+      
+    //   if (tempYear !== curYear || tempMonth !== curMonth) {
+        
+    //     setCurYear(tempYear);
+    //     setCurMonth(tempMonth);
+
+    //     getExpenseList();
+    //     // dispatch(readExpenseList({ month: moment().format(`${tempYear}-${tempMonth}`) }));
+    //   } else {
+    //     setExpenseList();
+    //   }
+    // } else {
+    //   setExpenseList();
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curMonth, location]);
 

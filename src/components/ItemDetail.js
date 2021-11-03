@@ -2,7 +2,6 @@ import React from 'react';
 import {
   TextField, Button, FormControl, InputLabel, NativeSelect,
 } from '@material-ui/core';
-// import moment from "moment";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/src/stylesheets/datepicker.scss";
 import ko from 'date-fns/locale/ko';
