@@ -2,7 +2,7 @@
   "name": "brown_card",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://egs125.github.io/brown_card",
+  "homepage": "https://egs125.github.io/brown_card",
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
