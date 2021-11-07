@@ -1,13 +1,15 @@
 import React from 'react';
-import { PieChart } from 'react-minimal-pie-chart';
+import ReactECharts from 'echarts-for-react';
 
-const Home = () => {
-
-  return (
-    <div>
-      hhhh
-    </div>
-  );
-};
+const Home = ({ chartOption }) => (
+  <div>
+    <ReactECharts
+      option={chartOption}
+      notMerge={true}
+      lazyUpdate={true}
+      style={{height: '300px', width: '700px'}}
+    />
+  </div>
+);
 
 export default Home;
